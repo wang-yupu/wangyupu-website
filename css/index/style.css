@@ -25,3 +25,35 @@ a {
     text-decoration:none;
     font-weight:bold;
 }
+body
+{
+    background-color: #3776ab;
+    position: relative;
+}
+.like_transport_background {
+    background-color: #3776ab;
+}
+.under_infomations {
+    float: left;
+    right: 5%;
+    text-align: right;
+    vertical-align: text-top;
+}
+.under_infomations_frame {
+    float: right;
+    right: 5%;
+    text-align: right;
+    content: 75px 50px;
+    padding: 100px 50px;
+    vertical-align: text-top;
+    
+}
+.under_infomations_copyright {
+    text-align: center;
+    vertical-align: text-bottom;
+}
+.under_infomations_row {
+    text-align: center;
+    float: inline-end;
+    vertical-align: text-top;
+}
