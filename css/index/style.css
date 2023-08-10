@@ -3,3 +3,25 @@
     --primary-rgb: 0,255,255;
     background-color: rgba(var(--primary-rgb), var(--bg-opacity)) !important;
 }
+.cyan-light {
+    --bg-opacity: 1;
+    --primary-rgb: 224,255,255;
+    background-color: rgba(var(--primary-rgb), var(--bg-opacity)) !important;
+}
+.cyan-dark {
+    --bg-opacity: 1;
+    --primary-rgb: 175, 238, 238;
+    background-color: rgba(var(--primary-rgb), var(--bg-opacity)) !important;
+}
+.infomations {
+    margin-top: 2%;
+}
+.infomations_content {
+    float: right;
+    right: 5%;
+    text-align: center;
+}
+a {
+    text-decoration:none;
+    font-weight:bold;
+}
