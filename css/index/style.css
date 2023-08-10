@@ -1,0 +1,5 @@
+.title-bg {
+    --bg-opacity: 1;
+    --primary-rgb: 0,255,255;
+    background-color: rgba(var(--primary-rgb), var(--bg-opacity)) !important;
+}
