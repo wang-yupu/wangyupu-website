@@ -52,6 +52,9 @@ body
     text-align: center;
     vertical-align: text-bottom;
 }
+.under_infomations_frame_without_index {
+    padding-top:20%;
+}
 .under_infomations_row {
     text-align: center;
     float: inline-end;
