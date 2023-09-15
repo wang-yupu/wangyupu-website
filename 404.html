@@ -6,10 +6,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="font" href="/font/Ubuntu.ttf">
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/errorpage/404/style.css">
     <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
     <title>wangyupu | 404 Not found</title>
 </head>
 <body>
-    <a>404 err</a>
+    <style>
+        body{
+            background-color: #3776ab;
+        }
+    </style>
+    <iframe src="/framework/topbar.html" title="Topbar" class="topbariframe" width="100%" height="40px"><span>Topbar in framework</span></iframe>
+    <div class="app">
+    <div class="state">
+    <span>状态代码: 🔴404</span>
+    </div>
+    <div class="path">
+    <a>找不到此页面: </a><a id="pagepath"></a>
+    <script src="/js/errorpage/404_main.js"></script>
+</div>
+</div>
 </body>
 </html>
