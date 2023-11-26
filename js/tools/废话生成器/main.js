@@ -86,6 +86,6 @@ console.timeEnd("load");
 
 //显示信息
 document.getElementById("generator_button").innerHTML="生成一句废话!";
-document.getElementById("content").value="狂笑的蛇写散文";
+document.getElementById("content").value="你是一个人";
 document.getElementById("generator_button").onclick = button_callback;
 var loadsuccess = true;
