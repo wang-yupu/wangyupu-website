@@ -85,7 +85,7 @@ console.timeEnd("loadword");
 console.timeEnd("load");
 
 //显示信息
-document.getElementById("generator_button").innerHTML="生成一句废话!";
+document.getElementById("generator_button").innerHTML="让/js/tools/废话生成器/main.js生成一句你看了之后对你没有任何作用的一句以中国法定语言写成的没有任何作用的一句人类用于交流的东西(生成一句废话)";
 document.getElementById("content").value="你是一个人";
 document.getElementById("generator_button").onclick = button_callback;
 var loadsuccess = true;
