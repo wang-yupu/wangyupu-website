@@ -49,13 +49,13 @@ function randomanfeihua() {
         return `${total}个${item}中就有${total}个${item}是${item}`
     }
     if (method == 1){
-        return idkwhatthisname(db0t,total);
-    }
-    if (method == 2){
         return idkwhatthisname(db1t,total);
     }
-    if (method == 3){
+    if (method == 2){
         return idkwhatthisname(db2t,total);
+    }
+    if (method == 3){
+        return idkwhatthisname(db3t,total);
     }
     return "生成错误";
 }
