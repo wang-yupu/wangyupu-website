@@ -33,3 +33,6 @@ body {
 .centerd {
     text-align: center;
 }
+.input {
+    min-width: 75px;
+}
