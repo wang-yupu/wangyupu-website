@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirect...</title>
+</head>
+<body class="center">
+    <h1>正在将您重定向至目标页面</h1>
+    <button id="redirect" onclick="jumpto">立即重定向</button>
+    <style>
+        .center {
+            text-align: center;
+            font-size: 200%;
+        }
+        button {
+            font-size: 150%;
+            background-color: rgb(200,200,200)
+        }
+        body {
+            background-color: rgb(122,122,122);
+        }
+    </style>
+    <script>
+        var jumpto = 'https://www.bilibili.com/video/BV1GJ411x7h7';
+        function redirect(){
+            window.location.href = jumpto;
+            window.location.assign(jumpto);
+        }
+        window.location.href = jumpto;
+    </script>
+</body>
+</html>
