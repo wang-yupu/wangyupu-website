@@ -1,1 +1,0 @@
-document.getElementById("pagepath").innerHTML=window.location.href
