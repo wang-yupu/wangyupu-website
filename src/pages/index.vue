@@ -3,7 +3,7 @@ document.title = "wangyupu"
 </script>
 
 <template>
-INDEX
+wangyupu | INDEX
 </template>
 
 <style scoped>
