@@ -11,7 +11,8 @@
 
 <style scoped>
 .topbar{
-    backdrop-filter: saturate(30%) blur(3px);
+    backdrop-filter: saturate(30%) blur(5px);
+    border-bottom: 2px solid rgb(226, 226, 226);
 }
 .w_icon {
     height: 60px;
