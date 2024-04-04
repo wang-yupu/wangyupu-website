@@ -20,26 +20,26 @@ document.title = "wangyupu"
         </div>
         <div class="content_aligned">
             <div class="left">
-                <h1>联系我</h1>
+                <h1>你好</h1>
             </div>
             <div class="right">
-                <router-link to="/contact" class="nocolor_link index_link">在此处查看</router-link>
+                <a>你好</a>
             </div>
         </div>
         <div class="content_aligned">
             <div class="left">
-                <h1>联系我</h1>
+                <h1>你好</h1>
             </div>
             <div class="right">
-                <router-link to="/contact" class="nocolor_link index_link">在此处查看</router-link>
+                <a>你好</a>
             </div>
         </div>
         <div class="content_aligned">
             <div class="left">
-                <h1>联系我</h1>
+                <h1>你好</h1>
             </div>
             <div class="right">
-                <router-link to="/contact" class="nocolor_link index_link">在此处查看</router-link>
+                <a>你好</a>
             </div>
         </div>
     </div>
@@ -76,7 +76,12 @@ document.title = "wangyupu"
     padding-top: 3%;
     padding-bottom: 3%;
     margin-top:3%;
-    background-color: aquamarine;
+    background-color: rgb(95, 192, 159);
+    transition: background-color 0.2s ease;
+}
+.content_aligned:hover {
+    background-color: rgb(115, 227, 190);
+    transition: background-color 0.1s ease;
 }
 .left {
     display: flex;
