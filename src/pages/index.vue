@@ -10,15 +10,38 @@ document.title = "wangyupu"
         <h1 class="page_title">wangyupu's website</h1>
     </div>
     <div class="contents">
-        <el-row>
-            <el-col :span="12">
-                <h2>联系我</h2>
-            </el-col>
-            <el-col :span="12">
-                <router-link to="/contact" class="nocolor_link index_link"><a>点此查看</a></router-link>
-            </el-col>
-        </el-row>
-        
+        <div class="content_aligned">
+            <div class="left">
+                <h1>联系我</h1>
+            </div>
+            <div class="right">
+                <router-link to="/contact" class="nocolor_link index_link">在此处查看</router-link>
+            </div>
+        </div>
+        <div class="content_aligned">
+            <div class="left">
+                <h1>联系我</h1>
+            </div>
+            <div class="right">
+                <router-link to="/contact" class="nocolor_link index_link">在此处查看</router-link>
+            </div>
+        </div>
+        <div class="content_aligned">
+            <div class="left">
+                <h1>联系我</h1>
+            </div>
+            <div class="right">
+                <router-link to="/contact" class="nocolor_link index_link">在此处查看</router-link>
+            </div>
+        </div>
+        <div class="content_aligned">
+            <div class="left">
+                <h1>联系我</h1>
+            </div>
+            <div class="right">
+                <router-link to="/contact" class="nocolor_link index_link">在此处查看</router-link>
+            </div>
+        </div>
     </div>
 </div>
 </template>
@@ -38,10 +61,33 @@ document.title = "wangyupu"
     font-size: 300%;
 }
 .contents {
+    padding-top:3%;
+    padding-bottom: 3%;
     padding-left:15%;
     padding-right: 15%;
 }
 .index_link {
     font-size:150%
+}
+.content_aligned {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 3%;
+    padding-bottom: 3%;
+    margin-top:3%;
+    background-color: aquamarine;
+}
+.left {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 1%;
+}
+.right {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 1%;
 }
 </style>

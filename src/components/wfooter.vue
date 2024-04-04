@@ -5,7 +5,6 @@
 <template>
 <div class="footer" style="display: flex; align-items: center;  height: 100px;">
     <router-link to="/" class="w_icon"><img src="/src/assets/icon.png" alt="WANGYUPU ICON" width="80px"></img></router-link>
-    <a href="https://github.com/wang-yupu" class="nocolor_link footer_link">Github</a>
 </div>
 <div class="copyright">
     <a>版权所有 ©wangyupu</a>
