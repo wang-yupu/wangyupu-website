@@ -11,7 +11,6 @@
 
 <style scoped>
 .topbar{
-    background-color: #bfbfbf;
     backdrop-filter: saturate(30%) blur(3px);
 }
 .w_icon {

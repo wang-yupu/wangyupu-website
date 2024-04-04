@@ -44,7 +44,7 @@ button:focus-visible {
   transition: color 0.3s ease;
 }
 .nocolor_link:hover {
-  color: #ffffff;
+  color: #aeaeae;
   text-decoration: none;
   transition: color 0.2s ease;
 }

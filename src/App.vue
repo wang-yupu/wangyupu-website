@@ -6,7 +6,9 @@ import footer from './components/footer.vue'
 <template>
 <el-container class="container">
     <el-header>
-        <topbar></topbar>
+        <el-affix :offset="0">
+            <topbar></topbar>
+        </el-affix>
     </el-header>
     <el-main>
         <router-view></router-view>
