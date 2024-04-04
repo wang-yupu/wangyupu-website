@@ -1,6 +1,6 @@
 <script setup>
 import topbar from './components/topbar.vue'
-import footer from './components/footer.vue'
+import wfooter from './components/wfooter.vue'
 </script>
 
 <template>
@@ -15,7 +15,7 @@ import footer from './components/footer.vue'
     </el-main>
     </el-container>
     <el-footer>
-        <footer></footer>
+        <wfooter></wfooter>
     </el-footer>
 </template>
 
