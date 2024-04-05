@@ -1,6 +1,7 @@
 <script setup>
 import topbar from './components/topbar.vue'
 import wfooter from './components/wfooter.vue'
+
 </script>
 
 <template>
