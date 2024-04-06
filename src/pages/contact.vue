@@ -109,7 +109,12 @@ function confirm() {
     text-align: center;
 }
 .lock_input {
-    width: 15%;
+    width: 50%;
+}
+@media screen and (min-width: 640px){
+    .lock_input {
+        width: 20%;
+    }
 }
 .confirm_button {
     margin-top:1%;
