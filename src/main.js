@@ -8,6 +8,10 @@ import route from './routerule.js'
 const router = createRouter({
     history: createWebHistory(),
     routes:route.route_rule,
+    scrollBehavior(to, from, savedPosition) {
+        // 始终滚动到顶部
+        return { top: 0 }
+    },
 })
 // Element Plus
 import ElementPlus from 'element-plus'

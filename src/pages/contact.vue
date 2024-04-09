@@ -109,11 +109,11 @@ function confirm() {
     text-align: center;
 }
 .lock_input {
-    width: 50%;
+    width: 50vw
 }
 @media screen and (min-width: 640px){
     .lock_input {
-        width: 20%;
+        width: 25vw
     }
 }
 .confirm_button {
