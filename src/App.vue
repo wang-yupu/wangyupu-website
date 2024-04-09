@@ -6,7 +6,7 @@ import wfooter from './components/wfooter.vue'
 
 <template>
 <el-container class="container">
-    <el-header height="40">
+    <el-header height="10vh">
         <el-affix :offset="0">
             <topbar></topbar>
         </el-affix>
