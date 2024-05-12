@@ -25,7 +25,8 @@ const vp_height = ref(window.innerHeight || document.documentElement.clientHeigh
 .w_icon {
     height: 3vh;
     width:3vh;
-    filter:brightness(2)
+    filter:brightness(2);
+    -webkit-filter: brightness(2);
 }
 .topbar_link {
     font-size: 2.5vh;
