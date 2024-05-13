@@ -3,7 +3,7 @@
 </script>
 
 <template>
-<h1>wangyupu</h1>
+<h1>wangyupu 工具索引</h1>
 </template>
 
 <style scoped>

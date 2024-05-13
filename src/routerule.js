@@ -4,10 +4,14 @@ const contact = () => import('./pages/contact.vue')
 const tools = () => import('./pages/tools.vue')
 const ep404nf = () => import('./pages/404nf.vue')
 
+// Tools
+const nngv = () => import('./pages/tools/nngv/page.vue')
+
 const route_rule = [
     { path: '/', component: index },
     { path: '/contact/', component: contact },
     { path: '/tools/', component: tools },
+    { path: '/tool/nngweb', component: nngv },
     { path: '/:pathMatch(.*)*', name: 'NotFound', component: ep404nf }
 ]
 
