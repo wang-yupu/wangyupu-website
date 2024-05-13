@@ -1,6 +1,7 @@
 <script setup>
 import { useRouter,useRoute } from 'vue-router'
 import { ref } from 'vue'
+
 const router = useRouter()
 const currentPage = window.location.href
 function back(){
@@ -18,7 +19,18 @@ function redirect(){
         back()
     }
 }
-setInterval(redirect,10)
+const redirectInterval = setInterval(redirect,10)
+
+import routerule from './../routerule.js'
+const redirects = routerule.autoredirects
+
+redirects.forEach(function(item,index,array){
+    console.log(item,index,array)
+    if(currentPage.includes(item['kw'])){
+        clearInterval(redirectInterval)
+        router.push(item['url'])
+    }
+})
 </script>
 
 <template>

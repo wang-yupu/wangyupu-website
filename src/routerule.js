@@ -15,5 +15,10 @@ const route_rule = [
     { path: '/:pathMatch(.*)*', name: 'NotFound', component: ep404nf }
 ]
 
-export default {route_rule}
+// 关键词重定向: KW , URL
+const autoredirects = [
+    {"kw":'netease', "url":'/tool/nngweb'},
+]
+
+export default {route_rule,autoredirects}
 
