@@ -6,7 +6,7 @@ import wfooter from './components/wfooter.vue'
 
 <template>
 <el-container class="container">
-    <el-header height="10vh">
+    <el-header>
         <el-affix :offset="0">
             <topbar></topbar>
         </el-affix>
@@ -23,5 +23,6 @@ import wfooter from './components/wfooter.vue'
 <style scoped>
 .container {
     background-color: #fafafa;
+    min-height: 100vh;
 }
 </style>
