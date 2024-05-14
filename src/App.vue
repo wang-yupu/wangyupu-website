@@ -15,9 +15,10 @@ import wfooter from './components/wfooter.vue'
         <router-view></router-view>
     </el-main>
     </el-container>
-    <el-footer height="100">
+    <el-footer height="101">
         <wfooter></wfooter>
     </el-footer>
+
 </template>
 
 <style scoped>
