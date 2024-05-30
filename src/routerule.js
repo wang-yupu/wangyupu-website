@@ -7,9 +7,11 @@ const ep404nf = () => import('./pages/404nf.vue')
 // Tools
 // const nngv = () => import('./pages/tools/nngv/page.vue')
 const nngv = () => {
+    console.log("Loading")
     console.time("PageLoadTime")
     const module=import('./pages/tools/nngv/page.vue')
     console.timeEnd("PageLoadTime")
+    console.log("Ready")
     return module
 }
 // KeleMC News
