@@ -7,11 +7,15 @@ const ep404nf = () => import('./pages/404nf.vue')
 // Tools
 const nngv = () => import('./pages/tools/nngv/page.vue')
 
+// KeleMC News
+const kelemc_news = () => import('./pages/KeleMC/KeleMC_News_HomePage.vue')
+
 const route_rule = [
     { path: '/', component: index },
     { path: '/contact/', component: contact },
     { path: '/tools/', component: tools },
-    { path: '/tool/nngweb', component: nngv },
+    { path: '/tool/nngweb/', component: nngv },
+    { path: '/KeleMC-News-HomePage/', component: kelemc_news },
     { path: '/:pathMatch(.*)*', name: 'NotFound', component: ep404nf }
 ]
 

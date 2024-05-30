@@ -12,7 +12,9 @@ import wfooter from './components/wfooter.vue'
         </el-affix>
     </el-header>
     <el-main>
-        <router-view></router-view>
+        <Transition name="WPageTransition" mode="out-in">
+            <router-view></router-view>
+        </Transition>
     </el-main>
     </el-container>
     <el-footer height="101">
@@ -25,5 +27,15 @@ import wfooter from './components/wfooter.vue'
 .container {
     background-color: #fafafa;
     min-height: 100vh;
+}
+
+.WPageTransition-enter-active,
+.WPageTransition-leave-active {
+    transition: opacity 0.5s ease;
+}
+
+.WPageTransition-enter-from,
+.WPageTransition-leave-to {
+    opacity: 0;
 }
 </style>
