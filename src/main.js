@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
+import { createStore } from 'vuex'
 import './style.css'
 import App from './App.vue'
 
@@ -13,9 +14,11 @@ const router = createRouter({
         return { top: 0 }
     },
 })
+
 // Element Plus
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+
 
 const app = createApp(App)
 app.use(router)
