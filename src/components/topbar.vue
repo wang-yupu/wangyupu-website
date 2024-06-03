@@ -52,7 +52,7 @@ function updatePGB(){
         }
     }
     totalPGBMoved.value++
-    if (totalPGBMoved==120){ //清理interval并且进入等待加载模式
+    if (totalPGBMoved==10){ //清理interval，回头，开始显示加载的程度。
         
     }
 }
@@ -61,8 +61,10 @@ var currentPGBUpdate = 0
 watch(isPageLoading, (newVal, oldVal) => {
     if (newVal){
         currentPGBUpdate = setInterval(updatePGB, 15)
+        console.log("开始更新加载进度条")
     }
     else{
+        console.log("完成加载")
         clearInterval(currentPGBUpdate)
         PGBMarginLeft.value = -6
         totalPGBMoved.value = 0
