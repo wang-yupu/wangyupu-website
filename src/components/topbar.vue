@@ -42,7 +42,7 @@ function updatePGB(){
         PGBMarginLeft.value = PGBMarginLeft.value-1
     }
     
-    if (PGBMarginLeft.value == 101 || PGBMarginLeft.value == -6){
+    if (PGBMarginLeft.value == 100-PGBWidth.value || PGBMarginLeft.value == -6){
         if (PGBFacing.value == "right"){ //反转方向
         PGBFacing.value = "left"
         }
@@ -54,7 +54,7 @@ function updatePGB(){
 var currentPGBUpdate = 0
 watch(isPageLoading, (newVal, oldVal) => {
     if (newVal){
-        currentPGBUpdate = setInterval(updatePGB, 10)
+        currentPGBUpdate = setInterval(updatePGB, 15)
     }
     else{
         clearInterval(currentPGBUpdate)
@@ -89,7 +89,7 @@ watch(isPageLoading, (newVal, oldVal) => {
 .topbarBGProgressBar {
     position: absolute;
     backdrop-filter: saturate(100%) blur(5px);
-    background: #770fff23;
+    background: #ab6bff;
 }
 .dark .topbarBGProgressBar {
     background: #770fff;
