@@ -5,6 +5,7 @@ import App from './App.vue'
 
 // 路由相关
 import route from './routerule.js'
+import isPageLoading from './store.js'
 const router = createRouter({
     history: createWebHistory(),
     routes:route.route_rule,
@@ -13,7 +14,12 @@ const router = createRouter({
         return { top: 0 }
     },
 })
-
+router.beforeEach((to, from) => {
+    isPageLoading.value = true
+})
+router.afterEach(() => {
+    isPageLoading.value = false
+})
 // Element Plus
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'

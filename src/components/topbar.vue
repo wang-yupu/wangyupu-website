@@ -26,10 +26,45 @@ watch( DMSwitch, (newVal, oldVal) => {
     IsDarkMode.value = newVal;
 })
 
+import isPageLoading from '../store.js';
+const PGBMarginLeft = ref(-6)
+const PGBWidth = ref(5)
+
+const PGBFacing = ref("right")
+
+function updatePGB(){
+    // 循环的不确定加载进度
+    console.log("UPDATE PGB")
+    if (PGBFacing.value == "right"){ //反转方向
+        PGBMarginLeft.value = PGBMarginLeft.value+1
+    }
+    else{
+        PGBMarginLeft.value = PGBMarginLeft.value-1
+    }
+    
+    if (PGBMarginLeft.value == 101 || PGBMarginLeft.value == -6){
+        if (PGBFacing.value == "right"){ //反转方向
+        PGBFacing.value = "left"
+        }
+        else{
+            PGBFacing.value = "right"
+        }
+    }
+}
+var currentPGBUpdate = 0
+watch(isPageLoading, (newVal, oldVal) => {
+    if (newVal){
+        currentPGBUpdate = setInterval(updatePGB, 10)
+    }
+    else{
+        clearInterval(currentPGBUpdate)
+        PGBMarginLeft.value = -6
+    }
+})
 </script>
 
 <template>
-<div class="topbarBGProgressBar" :style="{height:0.03*vp_height+5+'px',fontSize:0.025*vp_height+'px'}"></div>
+<div class="topbarBGProgressBar" :style="{height:0.03*vp_height+'px',fontSize:0.025*vp_height+'px',marginLeft:PGBMarginLeft+'vw',width:PGBWidth+'vw'}"></div>
 <div class="topbar" :style="{height:0.03*vp_height+'px',fontSize:0.025*vp_height+'px'}">
     <div class="topbar_left">
         <router-link to="/" class="w_icon"><img src="/src/assets/icon.png" alt="WANGYUPU ICON" :height="vp_height*0.03" :style="{height:0.03*vp_height+'px'}"></img></router-link>
@@ -43,6 +78,9 @@ watch( DMSwitch, (newVal, oldVal) => {
             :inactive-action-icon="Sunny"
             :active-action-icon="Moon"
         />
+        <div v-if="isPageLoading">
+            <span>加载中...</span>
+        </div>
     </div>
 </div>
 </template>
@@ -52,7 +90,6 @@ watch( DMSwitch, (newVal, oldVal) => {
     position: absolute;
     backdrop-filter: saturate(100%) blur(5px);
     background: #770fff23;
-    width:0vw;
 }
 .dark .topbarBGProgressBar {
     background: #770fff;
