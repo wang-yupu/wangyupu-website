@@ -35,7 +35,7 @@ const PGBFacing = ref("right")
 function updatePGB(){
     // 循环的不确定加载进度
     console.log("UPDATE PGB")
-    if (PGBFacing.value == "right"){ //反转方向
+    if (PGBFacing.value == "right"){ //方向检测
         PGBMarginLeft.value = PGBMarginLeft.value+1
     }
     else{
@@ -51,6 +51,7 @@ function updatePGB(){
         }
     }
 }
+
 var currentPGBUpdate = 0
 watch(isPageLoading, (newVal, oldVal) => {
     if (newVal){
