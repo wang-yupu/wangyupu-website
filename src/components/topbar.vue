@@ -30,6 +30,7 @@ import isPageLoading from '../store.js';
 const PGBMarginLeft = ref(-6)
 const PGBWidth = ref(5)
 
+const totalPGBMoved = ref(0)
 const PGBFacing = ref("right")
 
 function updatePGB(){
@@ -50,6 +51,10 @@ function updatePGB(){
             PGBFacing.value = "right"
         }
     }
+    totalPGBMoved.value++
+    if (totalPGBMoved==120){ //清理interval并且进入等待加载模式
+        
+    }
 }
 
 var currentPGBUpdate = 0
@@ -60,6 +65,7 @@ watch(isPageLoading, (newVal, oldVal) => {
     else{
         clearInterval(currentPGBUpdate)
         PGBMarginLeft.value = -6
+        totalPGBMoved.value = 0
     }
 })
 </script>

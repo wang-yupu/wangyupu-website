@@ -32,7 +32,7 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 .el-header{padding:0 !important;}
-.el-main{padding:0 !important;margin-top: 3px;}
+.el-main{padding:0 !important;}
 .el-footer{padding:0 !important;}
 
 /* nocolor_link with transition*/
