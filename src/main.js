@@ -1,6 +1,5 @@
 import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
-import { createStore } from 'vuex'
 import './style.css'
 import App from './App.vue'
 
@@ -18,11 +17,12 @@ const router = createRouter({
 // Element Plus
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
-
+import 'element-plus/theme-chalk/dark/css-vars.css'
+//import './styles/dark/css-vars.css'
 
 const app = createApp(App)
 app.use(router)
 app.use(ElementPlus)
 app.mount('#app')
-console.log("%cWANGYUPU%c Website - Version 0.4%cv%cb%c","color:blue;font-size:200%","color:auto;font-size:150%","color:#33a06f;font-size:125%","color:red;font-size:125%","color:auto")
+console.log("%cWANGYUPU%c Website - Version 0.5%cv%cb%c","color:blue;font-size:200%","color:auto;font-size:150%","color:#33a06f;font-size:125%","color:red;font-size:125%","color:auto")
 console.log("Running on Vue version",app.version)

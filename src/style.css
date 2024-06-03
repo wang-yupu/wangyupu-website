@@ -10,6 +10,10 @@ html,body {
   
 }
 
+.dark {
+  background-color: #3c3c3c;
+}
+
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -51,4 +55,10 @@ button:focus-visible {
   color: #1111ee;
   text-decoration: none;
   transition: color 0.3s ease;
+}
+.dark .nocolor_link {
+  color:#c3f4ff;
+}
+.dark .nocolor_link:hover{
+  color:#ffffff;
 }

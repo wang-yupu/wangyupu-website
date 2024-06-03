@@ -2,20 +2,23 @@
 import topbar from './components/topbar.vue'
 import wfooter from './components/wfooter.vue'
 
+import IsDarkMode from './dark_mode.js'
 
 </script>
 
 <template>
 <el-container class="container">
-    <el-header>
+    <el-header :class="{ dark: IsDarkMode }">
         <el-affix :offset="0">
             <topbar></topbar>
         </el-affix>
     </el-header>
-    <el-main>
-        <Transition name="WPageTransition" mode="out-in">
-            <router-view></router-view>
-        </Transition>
+    <el-main :class="{ dark: IsDarkMode }">
+        <router-view v-slot="{ Component }">
+            <transition name="WPageTransition" mode="out-in">
+                <component :is="Component" />
+            </transition>
+        </router-view>
     </el-main>
     </el-container>
     <el-footer height="101">
@@ -32,7 +35,7 @@ import wfooter from './components/wfooter.vue'
 
 .WPageTransition-enter-active,
 .WPageTransition-leave-active {
-    transition: opacity 0.5s ease;
+    transition: opacity 0.2s linear;
 }
 
 .WPageTransition-enter-from,

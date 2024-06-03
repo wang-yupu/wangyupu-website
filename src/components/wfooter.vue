@@ -13,7 +13,7 @@
 
 <style scoped>
 .footer {
-    background-color :rgba(0, 255, 255, 0.07);
+    background-color :rgb(2, 189, 189);
 }
 .footer_link {
     font-size: 40px;

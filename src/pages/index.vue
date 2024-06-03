@@ -54,8 +54,11 @@ document.title = "wangyupu"
     justify-content: center; 
     height: 200px;
 }
+.dark .title_div{
+    background-color: rgb(167, 219, 219);
+}
 .page_title {
-    background: radial-gradient(circle, rgba(78, 239, 193, 0.703), #6e4eefb7);
+    background: radial-gradient(circle, rgb(78, 239, 193), #6e4eefb7);
     background-clip: text;
     -webkit-text-fill-color: transparent;
     font-size: 300%;
