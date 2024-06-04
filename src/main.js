@@ -19,7 +19,7 @@ router.beforeEach((to, from) => {
     isPageLoading.value = true
 })
 router.afterEach(() => {
-    //isPageLoading.value = false
+    isPageLoading.value = false
 })
 
 // Element Plus
