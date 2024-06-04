@@ -31,45 +31,85 @@ const PGBMarginLeft = ref(-6)
 const PGBWidth = ref(5)
 
 const totalPGBMoved = ref(0)
-const PGBFacing = ref("right")
+const PGBFacing = ref("right") // left,right,progress
+const LoadingIconRotate = ref(0)
+
+function resetPGB(withResetMoved=true){
+    PGBMarginLeft.value = -6
+    if (withResetMoved){
+        totalPGBMoved.value = 0
+        PGBFacing.value = "right"
+        clearInterval(currentPGBUpdate.value)
+        currentPGBUpdate.value = 0
+        LoadingIconRotate.value = 0
+    }
+    PGBWidth.value = 5
+}
 
 function updatePGB(){
+    LoadingIconRotate.value = LoadingIconRotate.value+1
     // 循环的不确定加载进度
-    console.log("UPDATE PGB")
+    if (PGBFacing.value == "progress") { // 进度模式
+        PGBMarginLeft.value = 0
+        if (PGBWidth.value <= 95) {
+            PGBWidth.value = PGBWidth.value+Math.random().toFixed(2)/3
+        } 
+
+        // 检查加载状态
+        if (!isPageLoading.value){ //显示最后一段过渡动画
+            console.log("加载完成")
+            if (PGBWidth.value >= 100){
+                resetPGB()
+            }
+            else{
+                if (PGBWidth.value < 95){
+                    PGBWidth.value = PGBWidth.value+1.5
+                } else {
+                    PGBWidth.value = PGBWidth.value+0.5
+                }
+                
+            }
+        }
+    }
+
     if (PGBFacing.value == "right"){ //方向检测
         PGBMarginLeft.value = PGBMarginLeft.value+1
     }
-    else{
+    if (PGBFacing.value == "left"){
         PGBMarginLeft.value = PGBMarginLeft.value-1
     }
     
-    if (PGBMarginLeft.value == 100-PGBWidth.value || PGBMarginLeft.value == -6){
-        if (PGBFacing.value == "right"){ //反转方向
-        PGBFacing.value = "left"
+    // 反转方向
+    if (PGBFacing != "progress" && (PGBMarginLeft.value == 100-PGBWidth.value || PGBMarginLeft.value == -6)){
+        if (PGBFacing.value == "right"){
+            PGBFacing.value = "left"
         }
         else{
             PGBFacing.value = "right"
         }
     }
-    totalPGBMoved.value++
-    if (totalPGBMoved==10){ //清理interval，回头，开始显示加载的程度。
-        
-    }
-}
 
-var currentPGBUpdate = 0
+    totalPGBMoved.value++
+    if (totalPGBMoved.value==210){ //回头，开始显示加载的程度。
+        resetPGB(false) // 重置
+        // console.log("开始显示假加载程度")
+        PGBFacing.value = "progress"
+}}
+
+let currentPGBUpdate = ref(0)
 watch(isPageLoading, (newVal, oldVal) => {
     if (newVal){
-        currentPGBUpdate = setInterval(updatePGB, 15)
-        console.log("开始更新加载进度条")
+        currentPGBUpdate.value = setInterval(updatePGB, 15)
+        // console.log("开始更新加载进度条")
     }
     else{
-        console.log("完成加载")
-        clearInterval(currentPGBUpdate)
-        PGBMarginLeft.value = -6
-        totalPGBMoved.value = 0
+        // console.log("完成加载")
+        if (PGBFacing.value != "progress"){
+            resetPGB()
+        }
     }
 })
+
 </script>
 
 <template>
@@ -87,9 +127,9 @@ watch(isPageLoading, (newVal, oldVal) => {
             :inactive-action-icon="Sunny"
             :active-action-icon="Moon"
         />
-        <div v-if="isPageLoading">
-            <span>加载中...</span>
-        </div>
+        <!-- <div v-if="isPageLoading">
+            <span :style="{transform: rotate(LoadingIconRotate+'deg')}">?</span>
+        </div> -->
     </div>
 </div>
 </template>
