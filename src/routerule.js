@@ -5,23 +5,10 @@ const tools = () => import('./pages/tools.vue')
 const ep404nf = () => import('./pages/404nf.vue')
 
 // Tools
-// const nngv = () => import('./pages/tools/nngv/page.vue')
-const nngv = () => {
-    console.log("Loading")
-    console.time("PageLoadTime")
-    const module=import('./pages/tools/nngv/page.vue')
-    console.timeEnd("PageLoadTime")
-    console.log("Ready")
-    return module
-}
+const nngv = () => import('./pages/tools/nngv/page.vue')
+
 // KeleMC News
-// const kelemc_news = () => import('./pages/KeleMC/KeleMC_News_HomePage.vue')
-const kelemc_news = () => {
-    console.time("PageLoadTime")
-    const module=import('./pages/KeleMC/KeleMC_News_HomePage.vue')
-    console.timeEnd("PageLoadTime")
-    return module
-}
+const kelemc_news = () => import('./pages/KeleMC/KeleMC_News_HomePage.vue')
 
 const route_rule = [
     { path: '/', component: index },
