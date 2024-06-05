@@ -32,7 +32,8 @@ const PGBWidth = ref(5)
 
 const totalPGBMoved = ref(0)
 const PGBFacing = ref("right") // left,right,progress
-const LoadingIconRotate = ref(0)
+const LoadingIconRotateValue = ref(0)
+const LoadingIconRotate = ref({transform: "rotate(0deg)"})
 
 function resetPGB(withResetMoved=true){
     PGBMarginLeft.value = -6
@@ -47,7 +48,12 @@ function resetPGB(withResetMoved=true){
 }
 
 function updatePGB(){
-    LoadingIconRotate.value = LoadingIconRotate.value+1
+    if ((totalPGBMoved % 10) == 0){
+    LoadingIconRotateValue.value = LoadingIconRotateValue.value+1
+    LoadingIconRotate.value = {transform: `rotate(${LoadingIconRotateValue.value}deg)`}
+    if (LoadingIconRotateValue > 360){
+        LoadingIconRotateValue.value = 0
+    }}
     // 循环的不确定加载进度
     if (PGBFacing.value == "progress") { // 进度模式
         PGBMarginLeft.value = 0
@@ -57,15 +63,14 @@ function updatePGB(){
 
         // 检查加载状态
         if (!isPageLoading.value){ //显示最后一段过渡动画
-            console.log("加载完成")
             if (PGBWidth.value >= 100){
                 resetPGB()
             }
             else{
                 if (PGBWidth.value < 95){
-                    PGBWidth.value = PGBWidth.value+1.5
+                    PGBWidth.value = PGBWidth.value+3
                 } else {
-                    PGBWidth.value = PGBWidth.value+0.5
+                    PGBWidth.value = PGBWidth.value+0.3
                 }
                 
             }
@@ -109,7 +114,8 @@ watch(isPageLoading, (newVal, oldVal) => {
         }
     }
 })
-
+const CompleteLoading = () => {
+    isPageLoading.value = false}
 </script>
 
 <template>
@@ -127,9 +133,10 @@ watch(isPageLoading, (newVal, oldVal) => {
             :inactive-action-icon="Sunny"
             :active-action-icon="Moon"
         />
-        <!-- <div v-if="isPageLoading">
-            <span :style="{transform: rotate(LoadingIconRotate+'deg')}">?</span>
-        </div> -->
+        <div class="LoadingIcon" v-if="isPageLoading">
+            <span>加载中</span>
+            <!-- <el-button @click="CompleteLoading">完成加载</el-button> -->
+        </div>
     </div>
 </div>
 </template>
@@ -138,10 +145,12 @@ watch(isPageLoading, (newVal, oldVal) => {
 .topbarBGProgressBar {
     position: absolute;
     backdrop-filter: saturate(100%) blur(5px);
-    background: #ab6bff;
+    background: #ab6bff80;
+    overflow: hidden;
+    max-width: 100vw;
 }
 .dark .topbarBGProgressBar {
-    background: #770fff;
+    background: #a25bff80;
 }
 .topbar{
     backdrop-filter: saturate(30%) blur(5px);
@@ -149,6 +158,7 @@ watch(isPageLoading, (newVal, oldVal) => {
     display: flex;
     justify-content: space-between;
     background: none;
+    overflow: hidden;
 }
 .w_icon {
     padding-top:3px;
@@ -170,5 +180,8 @@ watch(isPageLoading, (newVal, oldVal) => {
 }
 .DMSwitch {
     --el-switch-on-color: #737272;
+}
+.LoadingIcon {
+    color:greenyellow;
 }
 </style>
