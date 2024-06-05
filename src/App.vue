@@ -8,7 +8,7 @@ import IsDarkMode from './dark_mode.js'
 
 <template>
 <el-container class="container">
-    <el-header :class="{ dark: IsDarkMode }">
+    <el-header :class="{ dark: IsDarkMode }" height="5vh">
         <el-affix :offset="0">
             <topbar></topbar>
         </el-affix>
