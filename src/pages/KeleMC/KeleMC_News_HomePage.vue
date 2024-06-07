@@ -79,6 +79,9 @@ const newsListProcessed = ref(processList(newsList))
             <a href="https://kelemc.fun" ><img class="banner_kelemc_logo_content" src="https://kelemc.fun/banner.png" alt="KELEMC LOGO"></img></a>
         </div>
     </div>
+    <div class="statement">
+        <span>声明：这不是由<a class="nocolor_link" href="https://kelemc.fun">KeleMC</a>制作的，而是由其玩家制作的。</span>
+    </div>
 
         <div class="KeleMCNewsHomePageContent">
             <div>
@@ -97,7 +100,6 @@ const newsListProcessed = ref(processList(newsList))
                 />
             </div>
         </div>
-
     <el-backtop :right="30" :bottom="30" />
 </template>
 
@@ -107,7 +109,6 @@ const newsListProcessed = ref(processList(newsList))
     display:flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 3vh;
 }
 .banner_title {
     font-size:250%;
@@ -125,5 +126,9 @@ const newsListProcessed = ref(processList(newsList))
 }
 .newsCard {
     margin-top:3vh;
+}
+.statement {
+    background-color: rgb(235, 148, 148);
+    text-align: center;
 }
 </style>
