@@ -36,7 +36,7 @@ button:focus-visible {
 .el-footer{padding:0 !important;}
 
 /* nocolor_link with transition*/
-.nocolor_link:link {
+.nocolor_link {
   color: #1111ee;
   text-decoration: none;
   transition: color 0.3s ease;

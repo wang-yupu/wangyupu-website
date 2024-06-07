@@ -9,6 +9,7 @@ const nngv = () => import('./pages/tools/nngv/page.vue')
 
 // KeleMC News
 const kelemc_news = () => import('./pages/KeleMC/KeleMC_News_HomePage.vue')
+const kelemc_news_view = () => import('./pages/KeleMC/KeleMC_News_ViewPage.vue')
 
 const route_rule = [
     { path: '/', component: index },
@@ -16,6 +17,7 @@ const route_rule = [
     { path: '/tools/', component: tools },
     { path: '/tool/nngweb/', component: nngv },
     { path: '/KeleMC-News-HomePage/', component: kelemc_news },
+    { path: '/KeleMC-News-View/:title',name:'KeleMC-News-View', component: kelemc_news_view },
     { path: '/:pathMatch(.*)*', name: 'NotFound', component: ep404nf }
 ]
 

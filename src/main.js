@@ -20,6 +20,7 @@ router.beforeEach((to, from) => {
 })
 router.afterEach(() => {
     isPageLoading.value = false
+    document.title = "wangyupu"
 })
 
 // Element Plus

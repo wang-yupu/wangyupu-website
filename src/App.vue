@@ -15,9 +15,7 @@ import IsDarkMode from './dark_mode.js'
     </el-header>
     <el-main :class="{ dark: IsDarkMode }">
         <router-view v-slot="{ Component }">
-            <transition name="WPageTransition" mode="out-in">
                 <component :is="Component" />
-            </transition>
         </router-view>
     </el-main>
     </el-container>
