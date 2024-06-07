@@ -115,7 +115,7 @@ watch(downloadPageValue, (newValue, oldValue) => {
 <div v-if="!(currentNews.title == undefined)">
     <div class="banner">
         <div class="banner_title_and_subtitle">
-            <router-link to="/KeleMC_News_HomePage" class="nocolor_link"><span class="banner_title">wangyupu的KeleMC快报</span></router-link>
+            <router-link to="/KeleMC-News-HomePage" class="nocolor_link"><span class="banner_title">wangyupu的KeleMC快报</span></router-link>
             <span class="banner_subtitle">查看快报：{{ currentNews.title }}</span>
             <span class="banner_info">作者: {{ currentNews.author }}</span>
             <span class="banner_info">页数: {{ currentNews.images.length }}</span>
