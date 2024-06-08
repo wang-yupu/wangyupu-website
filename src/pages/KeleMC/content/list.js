@@ -31,6 +31,16 @@ const newsList = [
     downloadName: "第一期",
     author: "wangyupu",
 },
+{
+    title: '多页测试',
+    content: '测试单快报多图片。',
+    image: ['mp_test_page1.png','mp_test_page2.png'],
+    publishTime: '0',
+    linkEnable: true,
+    link: 'https://www.baidu.com/',
+    downloadName: "多页测试",
+    author: "admin",
+},
 ];
 
 export default newsList
