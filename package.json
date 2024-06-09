@@ -10,12 +10,12 @@
   },
   "dependencies": {
     "@vueuse/core": "^10.10.0",
-    "element-plus": "^2.7.4",
+    "element-plus": "^2.7.5",
     "vue": "^3.4.21",
     "vue-router": "^4.3.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.5",
-    "vite": "^5.2.12"
+    "vite": "^5.2.13"
   }
 }
