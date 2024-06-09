@@ -170,7 +170,7 @@ watch(downloadPageValue, (newValue, oldValue) => {
             <a :href="downloadFileURL" :download="downloadFileName" class="operation nocolor_link downloadOperation">下载</a>
         </div>
         <div v-else>
-            <span class="operatio downloadOperation">请选择页数</span>
+            <span class="operation downloadOperation">请选择页数</span>
         </div>
         </template>
 </el-dialog>
