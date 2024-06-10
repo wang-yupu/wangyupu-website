@@ -32,14 +32,14 @@ const newsList = [
     author: "wangyupu",
 },
 {
-    title: '多页测试',
-    content: '测试单快报多图片。',
-    image: ['mp_test_page1.png','mp_test_page2.png'],
-    publishTime: '0',
-    linkEnable: true,
-    link: 'https://www.baidu.com/',
-    downloadName: "多页测试",
-    author: "admin",
+title: '第二期',
+content: '主城翻新，村民不再卡服，端午节活动。',
+image: 'normal_2_1.png',
+publishTime: '1717977600',
+linkEnable: false,
+link: 'https://www.wytl.cc/',
+downloadName: "第二期",
+author: "wangyupu",
 },
 ];
 
