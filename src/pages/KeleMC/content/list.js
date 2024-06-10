@@ -41,6 +41,16 @@ link: 'https://www.wytl.cc/',
 downloadName: "第二期",
 author: "wangyupu",
 },
+{
+    title: '突发 2',
+    content: '主城翻新，村民不再卡服，端午节活动。',
+    image: 'breaking_2.png',
+    publishTime: '1718001000',
+    linkEnable: false,
+    link: 'https://www.wytl.cc/',
+    downloadName: "第二期",
+    author: "wangyupu",
+    },
 ];
 
 export default newsList
