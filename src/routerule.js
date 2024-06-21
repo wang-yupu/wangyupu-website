@@ -6,6 +6,7 @@ const ep404nf = () => import('./pages/404nf.vue')
 
 // Tools
 const nngv = () => import('./pages/tools/nngv/page.vue')
+const panorama_viewer = () => import('./pages/tools/panorama_viewer/page.vue')
 
 // KeleMC News
 const kelemc_news = () => import('./pages/KeleMC/KeleMC_News_HomePage.vue')
@@ -18,6 +19,7 @@ const route_rule = [
     { path: '/tool/nngweb/', component: nngv },
     { path: '/KeleMC-News-HomePage/', component: kelemc_news },
     { path: '/KeleMC-News-View/:title',name:'KeleMC-News-View', component: kelemc_news_view },
+    { path: '/tool/Panorama-Viewer/', component: panorama_viewer},
     { path: '/:pathMatch(.*)*', name: 'NotFound', component: ep404nf }
 ]
 

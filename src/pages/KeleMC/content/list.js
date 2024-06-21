@@ -50,7 +50,27 @@ author: "wangyupu",
     link: 'https://www.wytl.cc/',
     downloadName: "突发2",
     author: "wangyupu",
-    },
+},
+{
+    title: '第二期',
+    content: '玩家采访第一期、开始征稿。',
+    image: 'normal_3.png',
+    publishTime: '1718978220',
+    linkEnable: true,
+    link: 'https://www.wytl.cc/KeleMC-News-Viewer/玩家采访%201',
+    downloadName: "第二期",
+    author: "wangyupu",
+},
+{
+    title: '玩家采访 1',
+    content: '玩家采访第一期。',
+    image: 'player_q1.png',
+    publishTime: '1718978221',
+    linkEnable: false,
+    link: 'https://www.wytl.cc/',
+    downloadName: "玩家采访_1",
+    author: "wangyupu",
+},
 ];
 
 export default newsList
