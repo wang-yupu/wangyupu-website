@@ -85,6 +85,7 @@ function redirect() {
     display:flex;
     flex-direction: column;
     justify-content: end;
+    max-width: 30vw;
 }
 .description {
     font-size: 125%;

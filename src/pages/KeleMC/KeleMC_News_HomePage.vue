@@ -131,4 +131,7 @@ const newsListProcessed = ref(processList(newsList))
     background-color: rgb(235, 148, 148);
     text-align: center;
 }
+.KeleMCNewsHomePageContent {
+    margin-bottom: 5vh;
+}
 </style>
