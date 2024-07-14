@@ -3,7 +3,7 @@ import { useRouter,useRoute } from 'vue-router'
 import { ref } from 'vue'
 
 const router = useRouter()
-const currentPage = window.location.href
+const currentPage = window.top.location.href
 function back(){
     router.back()
 }

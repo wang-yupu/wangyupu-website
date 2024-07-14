@@ -20,6 +20,7 @@ const route_rule = [
     { path: '/KeleMC-News-HomePage/', component: kelemc_news },
     { path: '/KeleMC-News-View/:title',name:'KeleMC-News-View', component: kelemc_news_view },
     { path: '/tool/Panorama-Viewer/', component: panorama_viewer},
+    { path: '/special_404', name: 'NotFound', component: ep404nf },
     { path: '/:pathMatch(.*)*', name: 'NotFound', component: ep404nf }
 ]
 
