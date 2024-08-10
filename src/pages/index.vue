@@ -23,7 +23,7 @@ document.title = "wangyupu"
                 <h1>你好</h1>
             </div>
             <div class="right">
-                <a>你好</a>
+                <span>你好</span>
             </div>
         </div>
         <div class="content_aligned">
@@ -31,7 +31,7 @@ document.title = "wangyupu"
                 <h1>你好</h1>
             </div>
             <div class="right">
-                <a>你好</a>
+                <span>你好</span>
             </div>
         </div>
         <div class="content_aligned">
@@ -39,7 +39,7 @@ document.title = "wangyupu"
                 <h1>你好</h1>
             </div>
             <div class="right">
-                <a>你好</a>
+                <span>你好</span>
             </div>
         </div>
     </div>
