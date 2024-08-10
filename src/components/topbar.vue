@@ -153,7 +153,7 @@ const CompleteLoading = () => {
     background: #a25bff80;
 }
 .topbar{
-    backdrop-filter: saturate(30%) blur(5px);
+    backdrop-filter: saturate(100%) blur(5px);
     border-bottom: 2px solid rgb(226, 226, 226);
     display: flex;
     justify-content: space-between;
