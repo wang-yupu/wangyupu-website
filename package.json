@@ -12,6 +12,7 @@
     "@vueuse/core": "^10.10.0",
     "element-plus": "^2.7.5",
     "fscreen": "^1.2.0",
+    "pinyin": "^4.0.0-alpha.2",
     "three": "^0.165.0",
     "vue": "^3.4.21",
     "vue-router": "^4.3.2"

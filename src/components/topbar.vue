@@ -159,6 +159,7 @@ const CompleteLoading = () => {
     justify-content: space-between;
     background: none;
     overflow: hidden;
+    z-index: 300;
 }
 .w_icon {
     padding-top:3px;
