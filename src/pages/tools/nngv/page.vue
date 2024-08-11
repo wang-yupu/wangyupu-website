@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref,watch } from 'vue'
 import words from './words.json'
 
 const name = ref("")
@@ -54,7 +54,20 @@ window.addEventListener('resize', updateWH);
 
 updateWH()
 
-const VueVersion = ref(app.version)
+const showAlert = ref(false)
+const showSensitiveAlert = ref(false)
+const showShortAlert = ref(false)
+watch(name, (newVal) => {
+    if (name.value.length == 0) {
+        showAlert.value = true
+        showShortAlert.value = true
+    } else {
+        showAlert.value = false
+        showShortAlert.value = false
+    }
+})
+
+randomNameClick()
 </script>
 
 <template>
@@ -66,7 +79,12 @@ const VueVersion = ref(app.version)
             <div class="signContainer">
                 <img src="/src/assets/nng/sign_with_panda.png" :height="windowHeight * 0.6" class="sign" />
                 <button class="randomButton" @click="randomNameClick">&nbsp;&nbsp;<br>&nbsp;</button>
-                <input class="nameInput" maxlength="12" :value="name" placeholder="遵纪守法文明用语">
+                <input class="nameInput" maxlength="12" v-model="name" placeholder="遵纪守法文明用语">
+                <div class="alertContainer" v-show="showAlert">
+                    <img class="alert" :width="windowWidthLimit * 0.1" src="/src/assets/nng/alert.png">
+                    <span class="alertText" v-show="showSensitiveAlert">包含敏感词</span>
+                    <span class="alertTextShort" v-show="showShortAlert">昵称太短</span>
+                </div>
             </div>
         <div class="footer">
             <span>打开音乐体验更佳</span><br>
@@ -127,24 +145,23 @@ const VueVersion = ref(app.version)
     position: absolute;
     top: 17vh;
     content: "探索你的世界前，给自己起个名字吧";
-    font-size: 1.5vw;
     color: white;
     border-radius: 5px;
     left: 50%;
     transform: translateX(-50%);
+    font-size: 1vw;
 }
 
 .toastContainer::after {
     position: absolute;
-    content: "hello";
     top: 21vh;
     content: "稍后也可以在【设置】中更改名称";
-    font-size: 1vw;
     color: white;
     border-radius: 5px;
     left: 50%;
     transform: translateX(-50%);
     color: gray;
+    font-size: 0.75vw;
 }
 
 @media (max-width: 768px) {
@@ -156,6 +173,16 @@ const VueVersion = ref(app.version)
     .toastContainer::after {
         font-size: 2vw;
         top: 18vh
+    }
+}
+
+@media (max-width: 1536px) {
+    .toastContainer::before {
+        font-size: 1.5vw;
+    }
+
+    .toastContainer::after {
+        font-size: 1vw;
     }
 }
 
@@ -183,10 +210,36 @@ const VueVersion = ref(app.version)
     background-color: transparent;
     border: none;
     width: 100%;
-    font-size: 175%;
+    font-size: 150%;
     text-align: center;
     color:white;
 }
+
+.alert {
+    position: absolute;
+    left: 55%;
+    top: 44.75%;
+    transform: translateY(-40%);
+}
+
+.alertText {
+    position: absolute;
+    left: 55.6%;
+    top: 48%;
+    transform: translateY(-35%);
+    color: white;
+    font-size: 75%;
+}
+
+.alertTextShort {
+    position: absolute;
+    left: 56%;
+    top: 48%;
+    transform: translateY(-35%);
+    color: white;
+    font-size: 75%;
+}
+
 
 .footer {
     margin-top: 1vh;
