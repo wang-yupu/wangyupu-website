@@ -1,8 +1,9 @@
 <script setup>
-import { ref,watch } from 'vue'
+import { ref, watch } from 'vue'
 import words from './words.json'
 
 const name = ref("")
+const showModalAlert = ref(false)
 
 function choiceitem(array) {
     var randomIndex = Math.floor(Math.random() * array.length);
@@ -10,27 +11,27 @@ function choiceitem(array) {
 }
 
 function randomName() {
-    var method = choiceitem([1,2,3,4,5,6,7]);
-    if (method == 1){
-        return choiceitem(words.db["1"])+choiceitem(words.db["2"])+choiceitem(words.db["0"]);
+    var method = choiceitem([1, 2, 3, 4, 5, 6, 7]);
+    if (method == 1) {
+        return choiceitem(words.db["1"]) + choiceitem(words.db["2"]) + choiceitem(words.db["0"]);
     }
-    if (method == 2){
-        return choiceitem(words.db["1"])+choiceitem(words.db["3"])+choiceitem(words.db["0"]);
+    if (method == 2) {
+        return choiceitem(words.db["1"]) + choiceitem(words.db["3"]) + choiceitem(words.db["0"]);
     }
-    if (method == 3){
-        return choiceitem(words.db["1"])+choiceitem(words.db["3"])+choiceitem(words.db["1"]);
+    if (method == 3) {
+        return choiceitem(words.db["1"]) + choiceitem(words.db["3"]) + choiceitem(words.db["1"]);
     }
-    if (method == 4){
-        return choiceitem(words.db["1"])+choiceitem(words.db["5"])+choiceitem(words.db["1"]);
+    if (method == 4) {
+        return choiceitem(words.db["1"]) + choiceitem(words.db["5"]) + choiceitem(words.db["1"]);
     }
-    if (method == 5){
-        return choiceitem(words.db["1"])+choiceitem(words.db["0"])+choiceitem(words.db["3"]);
+    if (method == 5) {
+        return choiceitem(words.db["1"]) + choiceitem(words.db["0"]) + choiceitem(words.db["3"]);
     }
-    if (method == 6){
-        return choiceitem(words.db["1"])+choiceitem(words.db["0"])+choiceitem(words.db["2"]);
+    if (method == 6) {
+        return choiceitem(words.db["1"]) + choiceitem(words.db["0"]) + choiceitem(words.db["2"]);
     }
-    if (method == 7){
-        return choiceitem(words.db["2"])+"的"+choiceitem(words.db["1"])+choiceitem(words.db["4"]);
+    if (method == 7) {
+        return choiceitem(words.db["2"]) + "的" + choiceitem(words.db["1"]) + choiceitem(words.db["4"]);
     }
     return "生成错误";
 }
@@ -80,36 +81,42 @@ randomNameClick()
                 <img src="/src/assets/nng/sign_with_panda.png" :height="windowHeight * 0.6" class="sign" />
                 <button class="randomButton" @click="randomNameClick">&nbsp;&nbsp;<br>&nbsp;</button>
                 <input class="nameInput" maxlength="12" v-model="name" placeholder="遵纪守法文明用语">
-                <div class="alertContainer" v-show="showAlert">
+                <div class="alertContainer" v-if="showAlert">
                     <img class="alert" :width="windowWidthLimit * 0.1" src="/src/assets/nng/alert.png">
-                    <span class="alertText" v-show="showSensitiveAlert">包含敏感词</span>
-                    <span class="alertTextShort" v-show="showShortAlert">昵称太短</span>
+                    <span class="alertText" v-if="showSensitiveAlert">包含敏感词</span>
+                    <span class="alertTextShort" v-if="showShortAlert">昵称太短</span>
                 </div>
+                <Transition name="modalAlert">
+                    <div class="modalAlertContainer" v-if="showModalAlert">
+                        <img class="alertBG" src="/src/assets/nng/sensitiveAlertBG.png" :width="windowWidthLimit * 0.55">
+                        <span>含有敏感词</span>
+                    </div>
+                </Transition>
             </div>
-        <div class="footer">
-            <span>打开音乐体验更佳</span><br>
-            <iframe class="mp" :width="windowWidth * 0.9" height=50
-                src="//music.163.com/outchain/player?type=2&id=4010201&height=32"></iframe>
-            <div class="infomations">
-                <div>
-                    <img src="/src/assets/nng/info.png" height="50">
+            <div class="footer">
+                <span>打开音乐体验更佳</span><br>
+                <iframe class="mp" :width="windowWidth * 0.9" height=50
+                    src="//music.163.com/outchain/player?type=2&id=4010201&height=32"></iframe>
+                <div class="infomations">
                     <div>
-                        <span>词库从网易MC(安卓)中提取</span>
-                        <!-- <span>违禁词检测使用了<a href="https://github.com/hotoo/pinyin" class="nocolor_link">hotoo/pinyin</a></span>
+                        <img src="/src/assets/nng/info.png" height="50">
+                        <div>
+                            <span>词库从网易MC(安卓)中提取</span>
+                            <!-- <span>违禁词检测使用了<a href="https://github.com/hotoo/pinyin" class="nocolor_link">hotoo/pinyin</a></span>
                         <span>违禁词库版本 Example v0["1"]</span> -->
-                        <span>违禁词检测正在实现</span>
+                            <span>违禁词检测正在实现</span>
+                        </div>
                     </div>
-                </div>
-                <div>
-                    <img src="/src/assets/nng/feedback.png" height="50">
                     <div>
-                        <span>有问题/建议？</span>
-                        <span>在<router-link to="/contact" class="nocolor_link index_link">此处</router-link>联系我</span>
-                        <span></span>
+                        <img src="/src/assets/nng/feedback.png" height="50">
+                        <div>
+                            <span>有问题/建议？</span>
+                            <span>在<router-link to="/contact" class="nocolor_link index_link">此处</router-link>联系我</span>
+                            <span></span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
         </div>
     </div>
 </template>
@@ -212,12 +219,12 @@ randomNameClick()
     width: 100%;
     font-size: 150%;
     text-align: center;
-    color:white;
+    color: white;
 }
 
 .alert {
     position: absolute;
-    left: 55%;
+    left: 53%;
     top: 44.75%;
     transform: translateY(-40%);
 }
@@ -233,13 +240,26 @@ randomNameClick()
 
 .alertTextShort {
     position: absolute;
-    left: 56%;
+    left: 53.6%;
     top: 48%;
     transform: translateY(-35%);
     color: white;
     font-size: 75%;
 }
 
+.modalAlertContainer {
+    position: absolute;
+    left: 35.75%;
+    top: 55%;
+    background-color: rgba(104, 61, 31, 0.9);
+}
+
+.modalAlertContainer>span {
+    position: absolute;
+    left: 43%;
+    top: 31%;
+    color: white;
+}
 
 .footer {
     margin-top: 1vh;
@@ -253,14 +273,14 @@ randomNameClick()
     justify-content: center;
 }
 
-.infomations > div {
+.infomations>div {
     margin-left: 2vw;
     display: flex;
     flex-direction: row;
     align-items: center;
 }
 
-.infomations > div > div {
+.infomations>div>div {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -269,5 +289,15 @@ randomNameClick()
 
 .infomations div:first-child {
     margin-left: 0;
+}
+
+.modalAlert-enter-active,
+.modalAlert-leave-active {
+    transition: opacity 0.1s ease;
+}
+
+.modalAlert-enter-from,
+.modalAlert-leave-to {
+    opacity: 0;
 }
 </style>
