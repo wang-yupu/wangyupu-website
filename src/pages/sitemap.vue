@@ -76,4 +76,8 @@ h2 {
     flex-direction: column;
     flex-wrap: wrap;
 }
+
+.dark .container {
+    background-color: #3c3c3c;
+}
 </style>
