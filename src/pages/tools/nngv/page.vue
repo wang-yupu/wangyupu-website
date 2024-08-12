@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, reactive } from 'vue'
 import words from './words.json'
 
 const name = ref("")
@@ -69,6 +69,27 @@ watch(name, (newVal) => {
 })
 
 randomNameClick()
+
+// useAPI Animation border!
+// border-image: conic-gradient(#ff0000,#ffc400,#ffff00, #00ff00,#00ffff,#0000ff,#ff00ff,#ff0000) 1 1 /4px 4px;
+const gradientAngle = ref(0)
+const useAPIElementStyle = reactive({
+    "border-image": `conic-gradient(from ${gradientAngle.value}deg,#ff0000,#ffc400,#ffff00, #00ff00,#00ffff,#0000ff,#ff00ff,#ff0000) 1 1 /4px 4px`
+})
+
+function updateAngle(){
+    if (gradientAngle.value == 360) {
+        gradientAngle.value = 0
+    } else {
+        gradientAngle.value += 3
+    }
+    // 触发样式更新
+    useAPIElementStyle["border-image"] = `conic-gradient(from ${gradientAngle.value}deg,#ff0000,#ffc400,#ffff00, #00ff00,#00ffff,#0000ff,#ff00ff,#ff0000) 1 1 /4px 4px`
+    requestAnimationFrame(updateAngle)
+}
+
+requestAnimationFrame(updateAngle)
+
 </script>
 
 <template>
@@ -116,7 +137,7 @@ randomNameClick()
                             <span></span>
                         </div>
                     </div>
-                    <div class="useAPI">
+                    <div class="useAPI" :style="useAPIElementStyle">
                         <img src="/src/assets/nng/cloud.png" height="50">
                         <div>
                             <span>调用API</span>
@@ -189,10 +210,6 @@ randomNameClick()
     .toastContainer::after {
         font-size: 2vw;
         top: 18vh
-    }
-
-    .useAPI {
-        display: none;
     }
 }
 
@@ -278,15 +295,27 @@ randomNameClick()
     margin-top: 1vh;
 }
 
+.mp {
+    background: conic-gradient(
+      #ff00ff 0.25turn,
+      #000 0.25turn 0.5turn,
+      #ff00ff 0.5turn 0.75turn,
+      #000 0.75turn
+    )
+    top left / 15px 15px repeat;
+    border: 1px solid #00ffff;
+}
+
 .infomations {
     margin-top: 2vh;
     padding-bottom: 2vh;
     display: flex;
     flex-direction: row;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
-.infomations>div {
+.infomations > div {
     margin-left: 2vw;
     display: flex;
     flex-direction: row;
@@ -312,5 +341,11 @@ randomNameClick()
 .modalAlert-enter-from,
 .modalAlert-leave-to {
     opacity: 0;
+}
+
+.useAPI {
+    padding: 0.25%;
+    border: 4px solid transparent;
+    border-radius: 2px;
 }
 </style>
