@@ -88,7 +88,8 @@ randomNameClick()
                 </div>
                 <Transition name="modalAlert">
                     <div class="modalAlertContainer" v-if="showModalAlert">
-                        <img class="alertBG" src="/src/assets/nng/sensitiveAlertBG.png" :width="windowWidthLimit * 0.55">
+                        <img class="alertBG" src="/src/assets/nng/sensitiveAlertBG.png"
+                            :width="windowWidthLimit * 0.55">
                         <span>含有敏感词</span>
                     </div>
                 </Transition>
@@ -115,6 +116,13 @@ randomNameClick()
                             <span></span>
                         </div>
                     </div>
+                    <div>
+                        <img src="/src/assets/nng/cloud.png" height="50">
+                        <div>
+                            <span>调用API</span>
+                            <span>点<a class="nocolor_link" href="https://wapi.wangyupu.com/api/nng">这里</a>查看</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -132,6 +140,7 @@ randomNameClick()
     min-height: 100vh;
     max-width: 100vw;
     overflow: hidden;
+    image-rendering: pixelated;
 }
 
 .content {
