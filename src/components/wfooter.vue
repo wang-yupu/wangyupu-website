@@ -9,6 +9,7 @@
         <span>页面</span>
         <router-link to="/" class="nocolor_link">主页</router-link>
         <router-link to="/contact" class="nocolor_link">联系我</router-link>
+        <router-link to="/sitemap" class="nocolor_link">站点地图</router-link>
     </div>
     <div class="footerLinkColumn">
         <span>工具</span>
