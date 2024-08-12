@@ -116,7 +116,7 @@ randomNameClick()
                             <span></span>
                         </div>
                     </div>
-                    <div>
+                    <div class="useAPI">
                         <img src="/src/assets/nng/cloud.png" height="50">
                         <div>
                             <span>调用API</span>
@@ -189,6 +189,10 @@ randomNameClick()
     .toastContainer::after {
         font-size: 2vw;
         top: 18vh
+    }
+
+    .useAPI {
+        display: none;
     }
 }
 
