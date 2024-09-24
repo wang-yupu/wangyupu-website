@@ -1,7 +1,9 @@
 <script setup>
 import { ref, watch, reactive } from 'vue'
 import words from './words.json'
+import { useClipboard } from '@vueuse/core'
 
+const { text, copy, copied, isSupported } = useClipboard({ source })
 const name = ref("")
 const showModalAlert = ref(false)
 
@@ -250,6 +252,24 @@ requestAnimationFrame(updateAngle)
     font-size: 150%;
     text-align: center;
     color: white;
+}
+
+.nameInput:hover {
+    --showCopyButton: absolute;
+}
+
+.copyButton {
+    position: var(--showCopyButton);
+}
+
+.copyButton:hover {
+    --showCopyButton: absolute;
+}
+
+@media (max-width: 768px) {
+    .copyButton {
+        --showCopyButton: absoulte;
+    }
 }
 
 .alert {
