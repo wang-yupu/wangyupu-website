@@ -3,9 +3,9 @@ import { ref, watch, reactive } from 'vue'
 import words from './words.json'
 import { useClipboard } from '@vueuse/core'
 
-const { text, copy, copied, isSupported } = useClipboard({ source })
 const name = ref("")
 const showModalAlert = ref(false)
+const { text, copy, copied, isSupported } = useClipboard({ name })
 
 function choiceitem(array) {
     var randomIndex = Math.floor(Math.random() * array.length);
