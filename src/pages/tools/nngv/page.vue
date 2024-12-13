@@ -254,6 +254,10 @@ requestAnimationFrame(updateAngle)
     color: white;
 }
 
+.nameInput:focus {
+    outline: none;
+}
+
 .nameInput:hover {
     --showCopyButton: absolute;
 }
