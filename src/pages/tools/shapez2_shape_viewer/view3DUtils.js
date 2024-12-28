@@ -36,7 +36,7 @@ export async function loadModels() {
     for (const dirName of dirs) {
         result[`M${dirName}`] = {}
 
-        // 使用 Promise.all 来确保所有异步加载完成
+        // 用Promise.all确保所有异步加载
         await Promise.all(models.map(async (modelName) => {
             let modelglTFURL = new URL(`./models/${dirName}/${modelName}.gltf`, import.meta.url).href
             let modelBinURL = new URL(`./models/${dirName}/${modelName}.bin`, import.meta.url).href
@@ -61,7 +61,7 @@ export function timestampToReadable(timestamp) {
 
     return `${year}年${month}月${day}日 ${hours}:${minutes}:${seconds}`;
 }
-// shapeModelExport_${timestampToReadable(Date.now()/1000)}
+
 import { STLExporter } from 'three/examples/jsm/exporters/STLExporter.js';
 import { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter.js';
 
@@ -78,6 +78,7 @@ export function export3DModel(scene, format, filename = "exportedModel") {
         exporter.parse(scene, (result) => {
             const blob = new Blob([JSON.stringify(result)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
+            fileExtension = ".gltf"
             downloadFile(url, filename + fileExtension);  // 使用.glb扩展名表示二进制格式，或者使用.gltf作为文本格式
         });
         return; // GLTF是异步的，因此提前返回

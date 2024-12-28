@@ -10,9 +10,11 @@ const currentModel = ref('0')
 const viewerRef = ref(null)
 
 function exportAsSTL(){
-    console.log(viewerRef.value.scene,viewerRef)
+    viewerRef.value.exportAs("stl")
 }
-function exportAsglTF(){}
+function exportAsglTF(){
+    viewerRef.value.exportAs("gltf")
+}
 </script>
 
 <template>

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, defineExpose } from 'vue';
 
 const disabled = ref(true)
 const editMode = ref(false)
@@ -29,7 +29,7 @@ if (!WebGL.isWebGL2Available()) {
 
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { removeAllModels, loadModels } from './view3DUtils.js'
+import { removeAllModels, loadModels, export3DModel, timestampToReadable } from './view3DUtils.js'
 disabled.value = false
 const scene = new THREE.Scene();
 // 相机
@@ -112,6 +112,15 @@ function resetCamera() {
         controls.reset()
     }
 }
+
+function exportAs(fmt) {
+    console.log("尝试导出")
+    export3DModel(scene, fmt, `shapeModelExport_${timestampToReadable(Date.now()/1000)}`)
+}
+
+defineExpose({
+    exportAs
+})
 </script>
 
 <template>
