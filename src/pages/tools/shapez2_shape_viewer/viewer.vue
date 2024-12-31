@@ -51,7 +51,8 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.z = 5;
 let controls = undefined;
-camera.position.set(0, 3, 5);
+let raycaster,mousePos,selectedObject
+camera.position.set(0, 6, 5);
 camera.rotation.set(0, 0, 0);
 
 // 渲染器
@@ -71,8 +72,12 @@ onMounted(() => {
     controls = new OrbitControls(camera, renderer.domElement);
     controls.minDistance = 0.5;
     controls.maxDistance = 10;
-    controls.zoom0 = 3;
+    controls.zoom0 = 6;
     resetCamera();
+
+    // 光线投射
+    const raycaster = new THREE.Raycaster();
+    const mousePos = new THREE.Vector2();
 });
 
 onUnmounted(() => {
@@ -118,7 +123,7 @@ function renderCall() {
 function resetCamera() {
     if (controls) {
         controls.reset();
-        controls.zoom0 = 3;
+        controls.zoom0 = 6;
     }
 }
 

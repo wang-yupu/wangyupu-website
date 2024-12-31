@@ -84,6 +84,12 @@ export function parseCode(code, splitByLB = true) {
         }
 
         verifyLayer++;
+        if (verifyLayer > 6) {
+            return {
+                success: false,
+                message: `层级过多`,
+            };
+        }
     }
 
     let shapeObject2 = {}

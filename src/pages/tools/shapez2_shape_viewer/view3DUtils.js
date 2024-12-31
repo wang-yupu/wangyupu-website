@@ -107,13 +107,13 @@ export function downloadFile(url, fileName) {
 
 const defaultPosArgs = {
     xzOffset: 0.03,
-    yOffset : 0.1,
-    yBase : 0.02
-}
-const moveSpeed = 0.05
+    yOffset: 0.1,
+    yBase: 0.02,
+};
+const moveSpeed = 0.05;
 
 import { colorMapping } from './codeParse';
-export function addShapeForScene(scene, shape, color, loadedShape, layer = 0, quadrant = 0, rotateDeg = 90, shadow = true, posArgs={defaultPosArgs}, fromPosArgs=undefined) {
+export function addShapeForScene(scene, shape, color, loadedShape, layer = 0, quadrant = 0, rotateDeg = 90, shadow = true, posArgs = { defaultPosArgs }, fromPosArgs = undefined) {
     if (shape == 'c') {
         shape = 'C';
     }
@@ -147,19 +147,25 @@ export function addShapeForScene(scene, shape, color, loadedShape, layer = 0, qu
         return model; // 底板跳过下列代码
     }
 
-    model.rotation.set(0, THREE.MathUtils.degToRad(180 - (quadrant * rotateDeg)), 0);
-    model.scale.set(1 - 0.25 * layer, 1, 1 - 0.25 * layer);
-    // 位置
+    model.rotation.set(0, THREE.MathUtils.degToRad(180 - quadrant * rotateDeg), 0);
+    let xyScale = 1 - 0.25 * layer + (layer == 4 ? 0.15 : 0);
+    model.scale.set(xyScale, 1, xyScale);
+    // 位置 CwRwCwCw:P-P-P-P-:CcCcCcCc:CwRwCwCw:P-P-P-P-
     let offset = posArgs.xzOffset;
     let mx = offset * (quadrant === 2 || quadrant === 3 ? -1 : 1);
     let my = offset * (quadrant === 1 || quadrant === 2 ? 1 : -1);
-    model.targetPosition = new THREE.Vector3(mx, posArgs.yOffset * layer+posArgs.yBase, my);
+    if (quadrant === 4 || quadrant === 5) {
+        // hexagon and TODO: optimize hexagon
+        mx = -offset;
+        my = -offset;
+    }
+    model.targetPosition = new THREE.Vector3(mx, posArgs.yOffset * layer + posArgs.yBase, my);
     model.moveSpeed = moveSpeed;
     if (fromPosArgs) {
         let offset = fromPosArgs.xzOffset;
         let mx = offset * (quadrant === 2 || quadrant === 3 ? -1 : 1);
         let my = offset * (quadrant === 1 || quadrant === 2 ? 1 : -1);
-        model.position.set(mx, fromPosArgs.yOffset * layer+fromPosArgs.yBase, my);
+        model.position.set(mx, fromPosArgs.yOffset * layer + fromPosArgs.yBase, my);
     }
 
     return model;
@@ -172,20 +178,19 @@ export function addLight(scene, color, posx, posy, posz) {
 }
 
 export const viewToPosArgs = {
-    'default': {
+    default: {
         xzOffset: 0.03,
-        yOffset:0.1,
-        yBase: 0.02
+        yOffset: 0.1,
+        yBase: 0.02,
     },
-    'layer': {
+    layer: {
         xzOffset: 0.03,
-        yOffset:0.3,
-        yBase: 0.3
+        yOffset: 0.3,
+        yBase: 0.3,
     },
-    'quadrant': {
+    quadrant: {
         xzOffset: 0.15,
-        yOffset:0.3,
-        yBase: 0.3
-    }
-    
-}
+        yOffset: 0.3,
+        yBase: 0.3,
+    },
+};
