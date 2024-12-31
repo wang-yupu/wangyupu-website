@@ -1,126 +1,186 @@
 <script setup>
-import { ref, onMounted, defineExpose } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 
-const disabled = ref(true)
-const editMode = ref(false)
+const disabled = ref(true);
+const editMode = ref(false);
 function toggleEditMode() {
-    editMode.value = !editMode.value
+    editMode.value = !editMode.value;
 }
 
-const currentView = ref('default') // default / layer / quadrant
+const currentView = ref('default'); // default / layer / quadrant
+const lastObject = ref(undefined);
+const lastShowPlate = ref(undefined);
+const lastModel = ref(undefined);
+const prevView = ref('default');
 function viewToDefault() {
-    currentView.value = 'default'
+    prevView.value = currentView.value;
+    currentView.value = 'default';
+    if (lastObject.value) {
+        updateScene(lastObject.value, lastShowPlate.value, lastModel.value);
+    }
 }
 function viewToLayer() {
-    currentView.value = 'layer'
+    prevView.value = currentView.value;
+    currentView.value = 'layer';
+    if (lastObject.value) {
+        updateScene(lastObject.value, lastShowPlate.value, lastModel.value);
+    }
 }
 function viewToQuadrant() {
-    currentView.value = 'quadrant'
+    prevView.value = currentView.value;
+    currentView.value = 'quadrant';
+    if (lastObject.value) {
+        updateScene(lastObject.value, lastShowPlate.value, lastModel.value);
+    }
 }
 
 // 3D Rendering
 // chech webgl first
-const webglsupport = ref(true)
+const webglsupport = ref(true);
 import WebGL from 'three/addons/capabilities/WebGL.js';
 if (!WebGL.isWebGL2Available()) {
-    webglsupport.value = false
-    disabled.value = true
+    webglsupport.value = false;
+    disabled.value = true;
 }
 
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { removeAllModels, loadModels, export3DModel, timestampToReadable } from './view3DUtils.js'
-disabled.value = false
+import { removeAllModels, loadModels, export3DModel, timestampToReadable, addShapeForScene, addLight, viewToPosArgs, downloadFile } from './view3DUtils.js';
 const scene = new THREE.Scene();
 // 相机
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.z = 5;
-let controls = undefined
+let controls = undefined;
+camera.position.set(0, 3, 5);
+camera.rotation.set(0, 0, 0);
 
 // 渲染器
-const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true ,preserveDrawingBuffer: true});
 renderer.setSize(300, 300);
 onMounted(() => {
-    var rendererMasterElement = document.getElementById('viewerCanvasMaster')
-    renderer.setPixelRatio(window.devicePixelRatio)
-    renderer.setSize(rendererMasterElement.clientWidth, rendererMasterElement.clientHeight)
+    var rendererMasterElement = document.getElementById('viewerCanvasMaster');
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(rendererMasterElement.clientWidth, rendererMasterElement.clientHeight);
     rendererMasterElement.appendChild(renderer.domElement);
     renderCall();
-    window.addEventListener('resize', () => { onResize(rendererMasterElement) })
-    onResize(rendererMasterElement)
+    window.addEventListener('resize', () => {
+        onResize(rendererMasterElement);
+    });
+    onResize(rendererMasterElement);
     // 控制器
     controls = new OrbitControls(camera, renderer.domElement);
-    controls.minDistance = 0.5
-    controls.maxDistance = 10
+    controls.minDistance = 0.5;
+    controls.maxDistance = 10;
+    controls.zoom0 = 3;
+    resetCamera();
+});
 
-})
+onUnmounted(() => {
+    // cleanup
+    if (renderer) {
+        renderer.dispose();
+        renderer.domElement = null;
+    }
+    if (scene) {
+        scene.children.forEach((child) => {
+            if (child.geometry) child.geometry.dispose();
+            if (child.material) child.material.dispose();
+        });
+    }
+});
 
 // 加载模型
+let preloadedModels = undefined;
 onMounted(async () => {
-    const preloadedModels = await loadModels()
-    const currentModels = preloadedModels['M2']
-    const model = currentModels.Plate.scene
-    model.traverse((child) => {
-        if (child.isMesh) {
-            // 为每个网格设置颜色
-            child.material.color.set(0xFFFFFF);  // 红色
-        }
-    });
-    model.receiveShadow = true
+    preloadedModels = await loadModels();
+    disabled.value = false;
 
-    currentModels.R.scene.traverse((child) => {
-        if (child.isMesh) {
-            // 为每个网格设置颜色
-            child.material.color.set(0x00FFFF);  // 红色
-        }
-    });
-    currentModels.R.scene.receiveShadow = true
-
-
-    scene.add(model)
-    scene.add(currentModels.C.scene)
-    scene.add(currentModels.S.scene)
-    scene.add(currentModels.R.scene)
-    scene.add(currentModels.W.scene)
-    currentModels.R.scene.rotation.y = THREE.MathUtils.degToRad(90)
-    currentModels.S.scene.rotation.y = THREE.MathUtils.degToRad(180)
-    currentModels.W.scene.rotation.y = THREE.MathUtils.degToRad(270)
-    currentModels.C.scene.position.y = 0.025
-    currentModels.S.scene.position.y = 0.025
-    currentModels.R.scene.position.y = 0.025
-    currentModels.W.scene.position.y = 0.025
-
-    const pointLight = new THREE.PointLight(0xffffff, 10, 300,0);
-    pointLight.position.set(0,3, 0);
-    scene.add(pointLight);
-})
+    addLight(scene, 0xffffff, 0, 5, 0);
+});
 
 function onResize(rendererMasterElement) {
-    renderer.setSize(0, 0)
-    renderer.setSize(rendererMasterElement.clientWidth, rendererMasterElement.clientHeight)
+    renderer.setSize(0, 0);
+    renderer.setSize(rendererMasterElement.clientWidth, rendererMasterElement.clientHeight);
     camera.aspect = rendererMasterElement.clientWidth / rendererMasterElement.clientHeight;
     camera.updateProjectionMatrix();
 }
 
 function renderCall() {
     requestAnimationFrame(renderCall);
+    for (const child of scene.children) {
+        if (child.name == 'Scene' && 'targetPosition' in child) {
+            child.position.lerp(child.targetPosition, child.moveSpeed);
+        }
+    }
     renderer.render(scene, camera);
 }
 
 function resetCamera() {
     if (controls) {
-        controls.reset()
+        controls.reset();
+        controls.zoom0 = 3;
     }
 }
 
-function exportAs(fmt) {
-    console.log("尝试导出")
-    export3DModel(scene, fmt, `shapeModelExport_${timestampToReadable(Date.now()/1000)}`)
+function exportAs(fmt, code) {
+    if (fmt == 'image') {
+        const imgUrl = renderer.domElement.toDataURL('image/png');
+        downloadFile(imgUrl, `shapeModelImageExport_${timestampToReadable(Date.now() / 1000)}_${code}.png`);
+    }
+    export3DModel(scene, fmt, `shapeModelExport_${timestampToReadable(Date.now() / 1000)}_${code}`);
+}
+
+function asyncBlock(time) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(preloadedModels);
+        }, time);
+    });
+}
+
+async function updateScene(shapeObj, showPlate = true, model = 2) {
+    lastObject.value = shapeObj;
+    lastShowPlate.value = showPlate;
+    lastModel.value = model;
+    if (!preloadedModels) {
+        while (preloadedModels === undefined) {
+            await asyncBlock(250);
+        }
+    }
+    removeAllModels(scene);
+    removeAllModels(scene);
+    removeAllModels(scene);
+    removeAllModels(scene);
+    removeAllModels(scene);
+    const currentModels = preloadedModels[`M${model}`];
+    const posArg1 = viewToPosArgs[currentView.value];
+    const posArg2 = viewToPosArgs[prevView.value];
+
+    if (showPlate) {
+        addShapeForScene(scene, 'Plate', 'w', currentModels, 0, 0, 0, true);
+    }
+    // 摆放模型
+    let layerCurrent = 0,
+        quadrantCurrent = 0;
+    for (const layer of shapeObj.layers) {
+        quadrantCurrent = 0;
+        for (const quadrant of layer) {
+            if (quadrant.skip) {
+                quadrantCurrent++;
+                continue;
+            }
+
+            addShapeForScene(scene, quadrant.shape, quadrant.color, currentModels, layerCurrent, quadrantCurrent, shapeObj.quadrantRotateDegs, true, posArg1, posArg2);
+            quadrantCurrent++;
+        }
+        layerCurrent++;
+    }
 }
 
 defineExpose({
-    exportAs
-})
+    exportAs,
+    updateScene,
+});
 </script>
 
 <template>
@@ -137,8 +197,7 @@ defineExpose({
                 <button @click="viewToQuadrant" :class="{ selectedButton: currentView == 'quadrant' }">象限视图</button>
                 <div class="divider" />
                 <button @click="resetCamera">视角归位</button>
-                <button @click="toggleEditMode" :class="{ editModeEnabledButton: editMode }"
-                    class="editModeButton">编辑模式</button>
+                <button @click="toggleEditMode" :class="{ editModeEnabledButton: editMode }" class="editModeButton">编辑模式</button>
                 <a href="steam://rungameid/2162800" class="nocolor_link statText">启动游戏</a>
             </div>
         </div>
@@ -192,7 +251,7 @@ defineExpose({
     align-items: center;
 }
 
-.loading>span {
+.loading > span {
     font-size: 75%;
     color: #00ff00;
 }
@@ -214,7 +273,6 @@ defineExpose({
 .viewOptions button:hover {
     border: 1px gray solid;
 }
-
 
 .viewOptions {
     display: flex;

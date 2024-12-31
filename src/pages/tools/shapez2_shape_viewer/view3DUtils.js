@@ -1,53 +1,56 @@
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import * as THREE from 'three';
 
 export function removeAllModels(scene) {
-    for (let i = scene.children.length - 1; i >= 0; i--) {
-        const child = scene.children[i];
-        if (child.isMesh) {
+    for (const child of scene.children) {
+        if (child.name == 'Scene') {
             scene.remove(child);
-            child.geometry.dispose();
-            child.material.dispose();
         }
     }
 }
 
 function loadGLTFModel(url, binURL) {
     return new Promise((resolve, reject) => {
-        const loader = new GLTFLoader();
+        const manager = new THREE.LoadingManager();
+        manager.setURLModifier((resourceURL) => {
+            if (resourceURL.endsWith('.bin')) {
+                return binURL;
+            }
+            return resourceURL;
+        });
+        const loader = new GLTFLoader(manager);
+
         loader.load(
             url,
             (gltf) => resolve(gltf),
             undefined,
-            (error) => reject(error),
-            {
-                bin: binURL
-            }
+            (error) => reject(error)
         );
     });
 }
 
-
 export async function loadModels() {
-    const models = ["C", "F", "G", "H", "P", "R", "S", "W", "Plate"]
-    const dirs = ['2']
+    const models = ['C', 'F', 'G', 'H', 'P', 'R', 'S', 'W', 'Plate'];
+    const dirs = ['2'];
 
-    const result = {}
+    const result = {};
 
     for (const dirName of dirs) {
-        result[`M${dirName}`] = {}
+        result[`M${dirName}`] = {};
 
         // 用Promise.all确保所有异步加载
-        await Promise.all(models.map(async (modelName) => {
-            let modelglTFURL = new URL(`./models/${dirName}/${modelName}.gltf`, import.meta.url).href
-            let modelBinURL = new URL(`./models/${dirName}/${modelName}.bin`, import.meta.url).href
-            // 加载模型
-            let modelObject = await loadGLTFModel(modelglTFURL, modelBinURL)
-            result[`M${dirName}`][modelName] = modelObject
-        }))
+        await Promise.all(
+            models.map(async (modelName) => {
+                let modelglTFURL = new URL(`./models/${dirName}/${modelName}.gltf`, import.meta.url).href;
+                let modelBinURL = new URL(`./models/${dirName}/${modelName}.bin`, import.meta.url).href;
+                // 加载模型
+                let modelObject = await loadGLTFModel(modelglTFURL, modelBinURL);
+                result[`M${dirName}`][modelName] = modelObject;
+            })
+        );
     }
 
-    console.log("成功加载所有模型。", result)
-    return result
+    return result;
 }
 
 export function timestampToReadable(timestamp) {
@@ -59,13 +62,13 @@ export function timestampToReadable(timestamp) {
     const minutes = String(date.getMinutes()).padStart(2, '0');
     const seconds = String(date.getSeconds()).padStart(2, '0');
 
-    return `${year}年${month}月${day}日 ${hours}:${minutes}:${seconds}`;
+    return `${year}y${month}mo${day}d ${hours}:${minutes}:${seconds}`;
 }
 
 import { STLExporter } from 'three/examples/jsm/exporters/STLExporter.js';
 import { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter.js';
 
-export function export3DModel(scene, format, filename = "exportedModel") {
+export function export3DModel(scene, format, filename = 'exportedModel') {
     let exporter, data, fileExtension, mimeType;
 
     if (format === 'stl') {
@@ -76,12 +79,14 @@ export function export3DModel(scene, format, filename = "exportedModel") {
     } else if (format === 'gltf') {
         exporter = new GLTFExporter();
         exporter.parse(scene, (result) => {
-            const blob = new Blob([JSON.stringify(result)], { type: 'application/json' });
+            const blob = new Blob([JSON.stringify(result)], {
+                type: 'application/json',
+            });
             const url = URL.createObjectURL(blob);
-            fileExtension = ".gltf"
-            downloadFile(url, filename + fileExtension);  // 使用.glb扩展名表示二进制格式，或者使用.gltf作为文本格式
+            fileExtension = '.gltf';
+            downloadFile(url, filename + fileExtension);
         });
-        return; // GLTF是异步的，因此提前返回
+        return;
     } else {
         console.error('不支持的格式');
         return;
@@ -92,10 +97,95 @@ export function export3DModel(scene, format, filename = "exportedModel") {
     downloadFile(url, filename + fileExtension);
 }
 
-function downloadFile(url, fileName) {
+export function downloadFile(url, fileName) {
     const link = document.createElement('a');
     link.href = url;
     link.download = fileName;
     link.click();
     URL.revokeObjectURL(url);
+}
+
+const defaultPosArgs = {
+    xzOffset: 0.03,
+    yOffset : 0.1,
+    yBase : 0.02
+}
+const moveSpeed = 0.05
+
+import { colorMapping } from './codeParse';
+export function addShapeForScene(scene, shape, color, loadedShape, layer = 0, quadrant = 0, rotateDeg = 90, shadow = true, posArgs={defaultPosArgs}, fromPosArgs=undefined) {
+    if (shape == 'c') {
+        shape = 'C';
+    }
+
+    if (!loadedShape[shape]) {
+        console.warn('不存在的形状：', shape);
+        return;
+    }
+    const model = loadedShape[shape].scene.clone();
+    model.traverse((child) => {
+        if (child.isMesh) {
+            const material = child.material.clone();
+            material.color.set(colorMapping[color]);
+            if (shape == 'P') {
+                material.color.set(0x362d35);
+            }
+            material.emissive.set(0x362d35);
+            material.emissiveIntensity = 1;
+            material.metalness = 0.3;
+            material.roughness = 1.0;
+            if (shape == 'c') {
+                material.metalness = 1;
+            }
+            child.material = material;
+        }
+    });
+    model.receiveShadow = shadow;
+    scene.add(model);
+
+    if (shape == 'Plate') {
+        return model; // 底板跳过下列代码
+    }
+
+    model.rotation.set(0, THREE.MathUtils.degToRad(180 - (quadrant * rotateDeg)), 0);
+    model.scale.set(1 - 0.25 * layer, 1, 1 - 0.25 * layer);
+    // 位置
+    let offset = posArgs.xzOffset;
+    let mx = offset * (quadrant === 2 || quadrant === 3 ? -1 : 1);
+    let my = offset * (quadrant === 1 || quadrant === 2 ? 1 : -1);
+    model.targetPosition = new THREE.Vector3(mx, posArgs.yOffset * layer+posArgs.yBase, my);
+    model.moveSpeed = moveSpeed;
+    if (fromPosArgs) {
+        let offset = fromPosArgs.xzOffset;
+        let mx = offset * (quadrant === 2 || quadrant === 3 ? -1 : 1);
+        let my = offset * (quadrant === 1 || quadrant === 2 ? 1 : -1);
+        model.position.set(mx, fromPosArgs.yOffset * layer+fromPosArgs.yBase, my);
+    }
+
+    return model;
+}
+
+export function addLight(scene, color, posx, posy, posz) {
+    const pointLight = new THREE.PointLight(color, 10, 300, 0);
+    pointLight.position.set(posx, posy, posz);
+    scene.add(pointLight);
+}
+
+export const viewToPosArgs = {
+    'default': {
+        xzOffset: 0.03,
+        yOffset:0.1,
+        yBase: 0.02
+    },
+    'layer': {
+        xzOffset: 0.03,
+        yOffset:0.3,
+        yBase: 0.3
+    },
+    'quadrant': {
+        xzOffset: 0.15,
+        yOffset:0.3,
+        yBase: 0.3
+    }
+    
 }

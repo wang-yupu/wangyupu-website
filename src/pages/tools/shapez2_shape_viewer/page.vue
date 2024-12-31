@@ -1,87 +1,115 @@
 <script setup>
 import Viewer from './viewer.vue';
 
-document.title = "wangyupu | shapez 2 shape tool"
+document.title = 'wangyupu | shapez 2 shape tool';
 //
-import { ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 
-const shapeCode = ref('RbRbRbRb')
-const currentModel = ref('0')
-const viewerRef = ref(null)
+const shapeCode = ref('CwRwCwCw:P-P-P-P-:CcCcCcCc');
+const currentModel = ref('0');
+const viewerRef = ref(null);
+const splitByLB = ref(true);
+const parseSuccess = ref(false);
+const errorMessage = ref(undefined);
 
-function exportAsSTL(){
-    viewerRef.value.exportAs("stl")
+function exportAsSTL() {
+    viewerRef.value.exportAs('stl', shapeCode.value);
 }
-function exportAsglTF(){
-    viewerRef.value.exportAs("gltf")
+function exportAsglTF() {
+    viewerRef.value.exportAs('gltf', shapeCode.value);
 }
+
+function exportAsImage() {
+    viewerRef.value.exportAs('image', shapeCode.value);
+}
+
+import { parseCode } from './codeParse';
+import PageShapecodeHelp from './subComponents/pageShapecodeHelp.vue';
+import PageExamples from './subComponents/pageExamples.vue';
+
+function setShape(code) {
+    shapeCode.value = code;
+}
+
+const shapeCodeWatchCB = (val, f=true) => {
+    let result = parseCode(val, splitByLB.value);
+    if (!result.success) {
+        parseSuccess.value = false;
+        errorMessage.value = result.message;
+    } else {
+        parseSuccess.value = true;
+        if (viewerRef.value) {
+            viewerRef.value.updateScene(result.obj);
+        }
+    }
+    if (f){
+        shapeCodeWatchCB(shapeCode.value, false)
+    }
+};
+watch(shapeCode, shapeCodeWatchCB);
+onMounted(() => {
+    shapeCodeWatchCB(shapeCode.value)
+});
 </script>
 
 <template>
     <div class="container">
         <div class="containerBgMixerLayer1">
             <div class="containerBgMixerLayer0">
-                <h1 class="pageTitleMaster"><span class="pageTitle">shapez 2 shape view / generator (WIP)</span></h1>
+                <h1 class="pageTitleMaster">
+                    <span class="pageTitle">shapez 2 shape view / generator (WIP)</span>
+                </h1>
                 <div class="content">
                     <div class="element shapeViewer">
                         <span>形状</span>
-                        <Viewer ref="viewerRef"/>
+                        <Viewer ref="viewerRef" />
                     </div>
                     <div class="element options">
                         <span>选项</span>
                         <div>
                             <span>形状代码</span>
-                            <span>
-                                形状代码如：<code>RuRuRuRu:SrSrSr--</code>，按<code>: 冒号</code>分割不同的层级，然后每两位字母为一个象限，两位字母中前一位代表形状，后一位代表颜色。
-                                若是<code>--</code>，则代表这一象限上没有形状。层数从最低（第一层）开始，象限从右上（东北）开始，顺时针排列。
-                                <br>
-                                可用的形状：
-                                <ul>
-                                    <li><code>R</code> 方形</li>
-                                    <li><code>C</code> 圆形</li>
-                                    <li><code>W</code> 钻石</li>
-                                    <li><code>S</code> 星星</li>
-                                    <li><code>P</code> 顶针（颜色对其无效）</li>
-                                    <li><code>c</code> 晶体（小写）</li>
-                                    <li><code>-</code> 空（颜色也为<code>-</code>）</li>
-                                </ul>
-                                六分模式下的形状：
-                                <ul>
-                                    <li><code>H</code> 六边形</li>
-                                    <li><code>G</code> 齿轮</li>
-                                    <li><code>F</code> 花朵</li>
-                                </ul>
-                                可用的颜色：
-                                <ul> 
-                                    <li><code style="color: red;">r</code> 红色</li>
-                                    <li><code style="color: greenyellow;">g</code> 绿色</li>
-                                    <li><code style="color: blue;">b</code> 蓝色</li>
-                                    <li><code style="color: yellow;">y</code> 黄色</li>
-                                    <li><code style="color: purple;">p</code> 紫色</li>
-                                    <li><code style="color: cyan;">c</code> 青色</li>
-                                    <li><code style="color: grey;">u</code> 没有颜色</li>
-                                    <li><code style="color: white;">w</code> 白色</li>
-                                </ul>
+                            <PageShapecodeHelp />
+                            <textarea v-model="shapeCode" ref="shapeCode.value" placeholder="形状代码" class="shapeCodeInput"></textarea>
+                            <span
+                                @click="
+                                    splitByLB = !splitByLB;
+                                    shapeCodeWatchCB(shapeCode);
+                                "
+                                style="cursor: pointer; user-select: none"
+                            >
+                                {{ splitByLB ? '提示：输入的换行符会被当做 ":"解析，点击以切换' : '提示：换行符将被忽略' }}
                             </span>
-                            <textarea v-model="shapeCode" ref="shapeCode.value" placeholder="形状代码"
-                                class="shapeCodeInput"></textarea>
                             <div>
-                                <span style="color: #00ff00">解析成功</span>
-                                <span style="color: #ff0000">解析失败：第 undefined 个字符出错：undefined</span>
+                                <span style="color: #00ff00" v-if="parseSuccess">解析成功</span>
+                                <span style="color: var(--el-color-danger)" v-else>解析失败：{{ errorMessage }}</span>
                             </div>
+                        </div>
+                        <div>
+                            <span>例子</span>
+                            <PageExamples
+                                @viewCode="
+                                    (val) => {
+                                        shapeCode = val;
+                                    }
+                                "
+                            />
+                        </div>
+                        <div>
+                            <span>显示选项</span>
+                            <el-select v-model="currentModel" class="optionsOption">
+                                <el-option value="0" label="官方模型" />
+                                <el-option value="1" label="简易模型" />
+                                <el-option value="2" label="community-vortex 模型" />
+                            </el-select>
+                        </div>
+                        <div>
+                            <span>导出图片</span>
+                            <button @click="exportAsImage">导出目前你所看见的图片</button>
                         </div>
                         <div>
                             <span>导出模型</span>
                             <button @click="exportAsSTL">导出为 STL</button>
                             <button @click="exportAsglTF">导出为 glTF</button>
-                        </div>
-                        <div>
-                            <span>显示选项</span>
-                            <el-select v-model="currentModel" class="optionsOption">
-                                <el-option value="0" label="官方模型"/>
-                                <el-option value="1" label="简易模型"/>
-                                <el-option value="2" label="community-vortex 模型"/>
-                            </el-select>
                         </div>
                     </div>
                 </div>
@@ -91,15 +119,19 @@ function exportAsglTF(){
 </template>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
 .container {
     background: linear-gradient(to right, #2b376b, #22477f, #2b376b);
     background-repeat: no-repeat;
     background-size: 100% 100%;
     overflow-x: hidden;
+    font-family: 'Barlow', system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-weight: 400;
 }
 
 .container span {
-    color: white
+    color: white;
 }
 
 .containerBgMixerLayer0 {
@@ -110,9 +142,9 @@ function exportAsglTF(){
 }
 
 .containerBgMixerLayer1 {
-    background: radial-gradient(at bottom, #a36646, #a366460a, transparent);
+    background: radial-gradient(circle at bottom, #a36646, #a366460a, transparent);
     background-repeat: no-repeat;
-    background-size: 100% 50%;
+    background-size: 100% 100%;
     background-position: bottom;
 }
 
@@ -123,6 +155,8 @@ function exportAsglTF(){
     margin-top: 10px;
     justify-content: space-around;
     align-items: flex-start;
+    font-family: 'Barlow', system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-weight: 400;
 }
 
 @media screen and (max-width: 1000px) {
@@ -188,6 +222,24 @@ function exportAsglTF(){
     flex-direction: column;
 }
 
+.colorList > li > code {
+    color: white;
+    padding-left: 3px;
+    padding-right: 3px;
+    border-radius: 3px;
+    margin-bottom: 2px;
+    padding-bottom: 2px;
+    width: 20px;
+    display: inline-block;
+}
+
+.colorList > li > code > span {
+    mix-blend-mode: difference;
+    text-align: center;
+    width: 100%;
+    display: inline-block;
+}
+
 .options button,
 .options textarea,
 .options input,
@@ -198,6 +250,14 @@ function exportAsglTF(){
     margin-bottom: 3px;
     transition: border linear 125ms;
     text-overflow: ellipsis;
+    font-family: 'Barlow', system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-weight: 400;
+    max-height: 1440px;
+}
+
+.options code {
+    font-family: 'Barlow', system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-weight: 400;
 }
 
 .options ul {
@@ -218,6 +278,12 @@ function exportAsglTF(){
     border: 1px transparent solid;
 }
 
+.options textarea {
+    overflow-y: visible;
+}
+
+.container *::selection,
+.options *::selection,
 .options textarea::selection,
 .options input::selection {
     background-color: #fecc01;
@@ -238,19 +304,18 @@ function exportAsglTF(){
     border: 1px gray solid;
 }
 
-
 .options button:active {
     border: 1px #fecc01 solid;
     background-color: #fecb014e;
 }
 
-.options>div {
+.options > div {
     display: flex;
     flex-direction: column;
     margin-bottom: 5px;
 }
 
-.options>div::after {
+.options > div::after {
     content: ' ';
     background-color: rgba(0, 0, 0, 0.3);
     margin-top: 10px;
@@ -261,13 +326,13 @@ function exportAsglTF(){
     margin-right: 6px;
 }
 
-.options>div:last-child::after {
+.options > div:last-child::after {
     content: ' ';
     background-color: rgba(0, 0, 0, 0.3);
     height: 0;
 }
 
-.options>div>span:first-child {
+.options > div > span:first-child {
     font-size: 120%;
     margin: 3px 0 3px 0;
 }

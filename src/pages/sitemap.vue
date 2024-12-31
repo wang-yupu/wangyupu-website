@@ -1,25 +1,24 @@
 <script setup>
-import { ref } from 'vue'
-import routeRule from './../routerule.js'
+import { ref } from 'vue';
+import routeRule from './../routerule.js';
 import { RouterLink } from 'vue-router';
 
 // 处理路由规则
 
-let showPages = {}
+let showPages = {};
 
 routeRule.route_rule.forEach((item) => {
-    if (!item.smargs){
-        item.smargs = {title:item.path,category:"没有分类"}
+    if (!item.smargs) {
+        item.smargs = { title: item.path, category: '没有分类', show: false };
     }
-    if (item.smargs.show == false){} else {
-        if (!showPages[item.smargs.category]){
-            showPages[item.smargs.category] = {name:item.smargs.category,pages:[]}
+    if (item.smargs.show == false) {
+    } else {
+        if (!showPages[item.smargs.category]) {
+            showPages[item.smargs.category] = { name: item.smargs.category, pages: [] };
         }
-        showPages[item.smargs.category].pages.push([item.smargs.title,item.path])
+        showPages[item.smargs.category].pages.push([item.smargs.title, item.path]);
     }
-})
-
-console.log("处理完成",showPages)
+});
 
 </script>
 
@@ -41,7 +40,7 @@ console.log("处理完成",showPages)
 .container {
     padding: 20px;
     max-width: 1400px;
-    margin:auto
+    margin: auto;
 }
 
 .title {
