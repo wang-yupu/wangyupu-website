@@ -1,4 +1,6 @@
 <script setup>
+import { lastProdCommitTime, lastProdCommitSHA } from '../store';
+
 
 </script>
 
@@ -22,6 +24,11 @@
         <span>无</span>
         <span style="color:gray">联系我?</span>
     </div>
+    <div class="footerLinkColumn">
+        <span>提交</span>
+        <span>SHA：{{ lastProdCommitSHA }}</span>
+        <span>时间：{{ lastProdCommitTime }}</span>
+    </div>
 </div>
 <div class="copyright">
     <span>版权所有 ©wangyupu</span>
@@ -33,7 +40,8 @@
     background-color :rgb(2, 189, 189);
     display: flex; 
     align-items: center;  
-    height: 100px;
+    min-height: 100px;
+    padding-bottom: 3px;
 }
 .footer_link {
     font-size: 40px;
