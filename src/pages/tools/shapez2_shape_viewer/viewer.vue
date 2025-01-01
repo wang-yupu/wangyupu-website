@@ -5,6 +5,10 @@ const disabled = ref(true);
 const editMode = ref(false);
 function toggleEditMode() {
     editMode.value = !editMode.value;
+    if (selectedObject) {
+        selectedObject.material.color.set(selectedObject.shapeColor);
+        selectedObject.material.emissive.set(selectedObject.borderColor);
+    }
 }
 
 const currentView = ref('default'); // default / layer / quadrant
@@ -46,24 +50,24 @@ if (!WebGL.isWebGL2Available()) {
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { removeAllModels, loadModels, export3DModel, timestampToReadable, addShapeForScene, addLight, viewToPosArgs, downloadFile } from './view3DUtils.js';
+import ViewerToolbar from './subComponents/viewerToolbar.vue';
 const scene = new THREE.Scene();
 // 相机
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.z = 5;
 let controls = undefined;
-let raycaster,mousePos,selectedObject
+let raycaster, mousePos, selectedObject;
 camera.position.set(0, 6, 5);
 camera.rotation.set(0, 0, 0);
 
 // 渲染器
-const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true ,preserveDrawingBuffer: true});
+const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, preserveDrawingBuffer: true });
 renderer.setSize(300, 300);
 onMounted(() => {
     var rendererMasterElement = document.getElementById('viewerCanvasMaster');
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(rendererMasterElement.clientWidth, rendererMasterElement.clientHeight);
     rendererMasterElement.appendChild(renderer.domElement);
-    renderCall();
     window.addEventListener('resize', () => {
         onResize(rendererMasterElement);
     });
@@ -76,9 +80,21 @@ onMounted(() => {
     resetCamera();
 
     // 光线投射
-    const raycaster = new THREE.Raycaster();
-    const mousePos = new THREE.Vector2();
+    raycaster = new THREE.Raycaster();
+    mousePos = new THREE.Vector2();
+
+    // 注册事件
+    window.addEventListener('mousemove', onMouseMove, false);
+
+    //
+    renderCall();
 });
+
+function onMouseMove(event) {
+    const rect = renderer.domElement.getBoundingClientRect(); // 获取canvas的边界
+    mousePos.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    mousePos.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+}
 
 onUnmounted(() => {
     // cleanup
@@ -117,6 +133,28 @@ function renderCall() {
             child.position.lerp(child.targetPosition, child.moveSpeed);
         }
     }
+
+    // raycaster
+
+    raycaster.setFromCamera(mousePos, camera);
+    const intersects = raycaster.intersectObjects(scene.children);
+    if (editMode.value) {
+        if (intersects.length > 0) {
+            if (intersects[0].object !== selectedObject && intersects[0].object) {
+                // 恢复
+                if (selectedObject) {
+                    selectedObject.material.color.set(selectedObject.shapeColor);
+                    selectedObject.material.emissive.set(selectedObject.borderColor);
+                }
+                selectedObject = intersects[0].object;
+                if (!selectedObject.unselectable) {
+                    selectedObject.material.color.set(0x00ffff);
+                    selectedObject.material.emissive.set(0xffff00);
+                }
+            }
+        }
+    }
+
     renderer.render(scene, camera);
 }
 
@@ -205,6 +243,9 @@ defineExpose({
                 <button @click="toggleEditMode" :class="{ editModeEnabledButton: editMode }" class="editModeButton">编辑模式</button>
                 <a href="steam://rungameid/2162800" class="nocolor_link statText">启动游戏</a>
             </div>
+        </div>
+        <div>
+            <ViewerToolbar :show="editMode" />
         </div>
     </div>
 </template>

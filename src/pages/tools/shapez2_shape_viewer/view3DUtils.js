@@ -114,8 +114,10 @@ const moveSpeed = 0.05;
 
 import { colorMapping } from './codeParse';
 export function addShapeForScene(scene, shape, color, loadedShape, layer = 0, quadrant = 0, rotateDeg = 90, shadow = true, posArgs = { defaultPosArgs }, fromPosArgs = undefined) {
+    let showAsCrystal
     if (shape == 'c') {
         shape = 'C';
+        showAsCrystal = true;
     }
 
     if (!loadedShape[shape]) {
@@ -127,17 +129,26 @@ export function addShapeForScene(scene, shape, color, loadedShape, layer = 0, qu
         if (child.isMesh) {
             const material = child.material.clone();
             material.color.set(colorMapping[color]);
+            child.shapeColor = colorMapping[color]
             if (shape == 'P') {
                 material.color.set(0x362d35);
+                child.shapeColor = 0x362d35
             }
             material.emissive.set(0x362d35);
+            child.borderColor = 0x362d35
             material.emissiveIntensity = 1;
             material.metalness = 0.3;
             material.roughness = 1.0;
-            if (shape == 'c') {
+            if (showAsCrystal) {
                 material.metalness = 1;
+                material.emissive.set(colorMapping[color]);
+                child.borderColor = colorMapping[color]
             }
             child.material = material;
+            child.unselectable = false;
+            if (shape=="Plate") {
+                child.unselectable = true;
+            }
         }
     });
     model.receiveShadow = shadow;
