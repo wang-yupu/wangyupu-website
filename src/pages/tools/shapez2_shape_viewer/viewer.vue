@@ -1,8 +1,9 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, reactive } from 'vue';
 
 const shapeCodeFromPage = defineModel();
 
+const editHistory = reactive([])
 const disabled = ref(true);
 const editMode = ref(false);
 function toggleEditMode() {
@@ -91,6 +92,7 @@ onMounted(() => {
     // 注册事件
     renderer.domElement.addEventListener('mousemove', onMouseMove, false);
     renderer.domElement.addEventListener('mousedown', onMouseClick, false);
+    window.addEventListener('keydown', keyDown, false)
 
     //
     renderCall();
@@ -129,6 +131,9 @@ function onMouseClick(event) {
             break;
         case 'color':
             newShapeObject = { shape: selectedObject.myMeta.shape, color: payload, skip: false };
+            if (selectedObject.myMeta.shape == 'P'){
+                newShapeObject = { shape: selectedObject.myMeta.shape, color: '-', skip: false };
+            }
             break;
         case 'actio':
             break;
@@ -157,7 +162,22 @@ function onMouseClick(event) {
     //
     if (lastObject.value) {
         shapeCodeFromPage.value = objectToCode(lastObject.value);
+        editHistory.push(lastObject.value)
+        if (editHistory.length >= 200){
+            editHistory.shift();
+        }
         updateScene(lastObject.value, lastShowPlate.value, lastModel.value, true);
+    }
+}
+
+function keyDown(event){
+    if (event.ctrlKey && event.key === 'z' && editMode.value) {
+        if ((!editHistory.pop()) || (!editHistory[editHistory.length-1])){
+            return
+        }
+        lastObject.value = editHistory[editHistory.length-1] 
+        updateScene(lastObject.value, lastShowPlate.value, lastModel.value, true);
+        console.log(editHistory)
     }
 }
 

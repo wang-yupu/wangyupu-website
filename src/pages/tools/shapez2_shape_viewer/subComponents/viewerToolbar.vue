@@ -39,7 +39,7 @@ const buttons2 = ref([
     <el-collapse-transition>
         <div v-if="props.show">
             <span class="title">编辑模式工具栏（WIP）</span>
-            <span>按 <code>Ctrl+Z</code> 撤消，按 <code>Ctrl+Y</code> 或 <code>Ctrl+Shift+Z</code> 重做/恢复</span>
+            <span>按 <code>Ctrl+Z</code> 撤消</span>
             <div>
                 <div class="container">
                     <ViewerToolbarShapeButton v-for="(button, index) in buttons" :key="index" v-model="selected" :data="button.data" :hotkey="button.hotkey" :listenKeyboard="props.show">{{ button.label }}</ViewerToolbarShapeButton>
