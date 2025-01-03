@@ -24,7 +24,7 @@ const buttons = ref([
     { label: '蓝色', data: 'color-b', hotkey: 'E' },
     { label: '绿色', data: 'color-g', hotkey: 'R' },
     { label: '青色', data: 'color-c', hotkey: 'T' },
-    { label: '紫色', data: 'color-p', hotkey: 'A' },
+    { label: '紫色', data: 'color-m', hotkey: 'A' },
     { label: '黄色', data: 'color-y', hotkey: 'S' },
     { label: '白色', data: 'color-w', hotkey: 'S' },
 ]);
