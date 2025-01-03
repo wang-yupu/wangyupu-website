@@ -39,7 +39,7 @@ const shapeCodeWatchCB = (val, f=true) => {
     } else {
         parseSuccess.value = true;
         if (viewerRef.value) {
-            viewerRef.value.updateScene(result.obj);
+            viewerRef.value.updateScene(result.obj,true,2,true);
         }
     }
     if (f){
@@ -62,7 +62,7 @@ onMounted(() => {
                 <div class="content">
                     <div class="element shapeViewer">
                         <span>形状</span>
-                        <Viewer ref="viewerRef" />
+                        <Viewer ref="viewerRef" v-model="shapeCode"/>
                     </div>
                     <div class="element options">
                         <span>选项</span>
@@ -96,11 +96,11 @@ onMounted(() => {
                         </div>
                         <div>
                             <span>显示选项</span>
-                            <el-select v-model="currentModel" class="optionsOption">
+                            <!-- <el-select v-model="currentModel" class="optionsOption">
                                 <el-option value="0" label="官方模型" />
                                 <el-option value="1" label="简易模型" />
                                 <el-option value="2" label="community-vortex 模型" />
-                            </el-select>
+                            </el-select> -->
                         </div>
                         <div>
                             <span>导出图片</span>
@@ -255,7 +255,8 @@ onMounted(() => {
     max-height: 1440px;
 }
 
-.options code {
+.options code,
+.container {
     font-family: 'Barlow', system-ui, Avenir, Helvetica, Arial, sans-serif;
     font-weight: 400;
 }

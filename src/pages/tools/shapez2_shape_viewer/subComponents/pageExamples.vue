@@ -40,6 +40,11 @@ function randomCode() {
     <ul>
         <PageExamplesExample name="异形工厂 Logo 形状" shape-code="RuCwP-Cw:----Ru--" @wclick="whenClick" />
         <PageExamplesExample name="异形工厂2 Logo 形状" shape-code="CwRwCwCw:P-P-P-P-:CcCcCcCc" @wclick="whenClick" />
+        <PageExamplesExample name="任务：蘑菇" shape-code="RuRuRuRu:CuSuSuCu:CuCuCuCu" @wclick="whenClick" />
+        <PageExamplesExample name="任务：蓝绿棋盘格" shape-code="RgCbRgCb:CbCgCbCg" @wclick="whenClick" />
+        <PageExamplesExample name="任务：造个小跟班" shape-code="SbP-P-Sb:--WbWb--:CuCuCuCu:P-CbCbP-" @wclick="whenClick" />
+        <PageExamplesExample name="任务：使用针销的晶体" shape-code="cgcgcgcg:cbcbcbcb:crcrcrcr:WuWuWuWu" @wclick="whenClick" />
+        <PageExamplesExample name="操作员认证第六个形状" shape-code="RucrRucr:cbcbcbcb:CwCwCwCw" @wclick="whenClick" />
         <PageExamplesExample name="随机形状（不包证可以生产）" shape-code="????????:????????" @wclick="randomCode" />
     </ul>
 </template>
@@ -53,8 +58,4 @@ ul > :nth-child(even) {
     backdrop-filter: none;
 }
 
-ul > :nth-child(even) > .viewButton {
-    backdrop-filter: none;
-    background-color: rgba(255, 255, 0, 0.1);
-}
 </style>

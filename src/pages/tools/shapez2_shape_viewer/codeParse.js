@@ -66,7 +66,7 @@ export function parseCode(code, splitByLB = true) {
             } else if (shape == 'P' && allowColors.includes(color)) {
                 return {
                     success: false,
-                    message: `层级 ${verifyLayer} 的第 ${verifyQuadrant} 个象限的形状为顶针，但是顶针不能具有有效的颜色(${color})`,
+                    message: `层级 ${verifyLayer} 的第 ${verifyQuadrant} 个象限的形状为针销 ，但是针销不能具有有效的颜色(${color})`,
                 };
             } else if (shape == '-' && color != '-') {
                 return {
@@ -99,4 +99,26 @@ export function parseCode(code, splitByLB = true) {
     shapeObject2['layers'] = shapeObject
 
     return { success: true, rawCode: code, obj: shapeObject2 };
+}
+
+export function objectToCode(object){
+    let shapeCode = ''
+    for (const layer of object.layers) {
+        for (const quadrant of layer) {
+            if (!quadrant.skip){
+                shapeCode += `${quadrant.shape}${quadrant.color}`
+            } else {
+                shapeCode += '--'
+            }
+        }
+
+        shapeCode += ':'
+    }
+
+    shapeCode = shapeCode.replace(`:${'--'.repeat(object.quadrantPerLayer)}`,'')
+    if (shapeCode.charAt(shapeCode.length - 1) == ':') {
+        shapeCode = shapeCode.slice(0, -1);
+    }
+
+    return shapeCode
 }

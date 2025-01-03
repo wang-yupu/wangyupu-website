@@ -113,8 +113,8 @@ const defaultPosArgs = {
 const moveSpeed = 0.05;
 
 import { colorMapping } from './codeParse';
-export function addShapeForScene(scene, shape, color, loadedShape, layer = 0, quadrant = 0, rotateDeg = 90, shadow = true, posArgs = { defaultPosArgs }, fromPosArgs = undefined) {
-    let showAsCrystal
+export function addShapeForScene(scene, shape, color, loadedShape, layer = 0, quadrant = 0, rotateDeg = 90, shadow = true, posArgs = { defaultPosArgs }, fromPosArgs = undefined, animation = true) {
+    let showAsCrystal;
     if (shape == 'c') {
         shape = 'C';
         showAsCrystal = true;
@@ -129,26 +129,33 @@ export function addShapeForScene(scene, shape, color, loadedShape, layer = 0, qu
         if (child.isMesh) {
             const material = child.material.clone();
             material.color.set(colorMapping[color]);
-            child.shapeColor = colorMapping[color]
+            child.shapeColor = colorMapping[color];
             if (shape == 'P') {
                 material.color.set(0x362d35);
-                child.shapeColor = 0x362d35
+                child.shapeColor = 0x362d35;
             }
             material.emissive.set(0x362d35);
-            child.borderColor = 0x362d35
+            child.borderColor = 0x362d35;
             material.emissiveIntensity = 1;
             material.metalness = 0.3;
             material.roughness = 1.0;
             if (showAsCrystal) {
                 material.metalness = 1;
                 material.emissive.set(colorMapping[color]);
-                child.borderColor = colorMapping[color]
+                child.borderColor = colorMapping[color];
             }
             child.material = material;
             child.unselectable = false;
-            if (shape=="Plate") {
+            if (shape == 'Plate') {
                 child.unselectable = true;
             }
+
+            child.myMeta = {
+                shape,
+                color,
+                layer,
+                quadrant,
+            };
         }
     });
     model.receiveShadow = shadow;
@@ -161,21 +168,21 @@ export function addShapeForScene(scene, shape, color, loadedShape, layer = 0, qu
     model.rotation.set(0, THREE.MathUtils.degToRad(180 - quadrant * rotateDeg), 0);
     let xyScale = 1 - 0.25 * layer + (layer == 4 ? 0.15 : 0);
     model.scale.set(xyScale, 1, xyScale);
-    // 位置 CwRwCwCw:P-P-P-P-:CcCcCcCc:CwRwCwCw:P-P-P-P-
+    // 位置 
     let offset = posArgs.xzOffset;
-    let mx = offset * (quadrant === 2 || quadrant === 3 ? -1 : 1);
-    let my = offset * (quadrant === 1 || quadrant === 2 ? 1 : -1);
-    if (quadrant === 4 || quadrant === 5) {
-        // hexagon and TODO: optimize hexagon
-        mx = -offset;
-        my = -offset;
+    let mx = offset * (quadrant % 4 === 2 || quadrant % 4 === 3 ? -1 : 1);
+    let my = offset * (quadrant % 4 === 1 || quadrant % 4 === 2 ? 1 : -1);
+
+    if (animation) {
+        model.targetPosition = new THREE.Vector3(mx, posArgs.yOffset * layer + posArgs.yBase, my);
+    } else {
+        model.position.set(mx, posArgs.yOffset * layer + posArgs.yBase, my);
     }
-    model.targetPosition = new THREE.Vector3(mx, posArgs.yOffset * layer + posArgs.yBase, my);
     model.moveSpeed = moveSpeed;
-    if (fromPosArgs) {
+    if (fromPosArgs && animation) {
         let offset = fromPosArgs.xzOffset;
-        let mx = offset * (quadrant === 2 || quadrant === 3 ? -1 : 1);
-        let my = offset * (quadrant === 1 || quadrant === 2 ? 1 : -1);
+        let mx = offset * (quadrant % 4 === 2 || quadrant % 4 === 3 ? -1 : 1);
+        let my = offset * (quadrant % 4 === 1 || quadrant % 4 === 2 ? 1 : -1);
         model.position.set(mx, fromPosArgs.yOffset * layer + fromPosArgs.yBase, my);
     }
 

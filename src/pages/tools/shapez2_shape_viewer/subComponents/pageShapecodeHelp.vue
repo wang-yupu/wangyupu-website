@@ -8,7 +8,7 @@
             <li><code>C</code> 圆形</li>
             <li><code>W</code> 钻石</li>
             <li><code>S</code> 星星</li>
-            <li><code>P</code> 顶针（不能着色）</li>
+            <li><code>P</code> 针销 （由顶针器生产）（不能着色）</li>
             <li><code>c</code> 晶体（小写）</li>
             <li>
                 <code>-</code>

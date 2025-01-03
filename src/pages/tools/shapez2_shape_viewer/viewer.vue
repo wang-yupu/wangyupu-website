@@ -1,6 +1,8 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 
+const shapeCodeFromPage = defineModel();
+
 const disabled = ref(true);
 const editMode = ref(false);
 function toggleEditMode() {
@@ -12,6 +14,8 @@ function toggleEditMode() {
 }
 
 const currentView = ref('default'); // default / layer / quadrant
+const editModeSelected = ref('shape-R');
+const editModeTool = ref('Add');
 const lastObject = ref(undefined);
 const lastShowPlate = ref(undefined);
 const lastModel = ref(undefined);
@@ -51,6 +55,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { removeAllModels, loadModels, export3DModel, timestampToReadable, addShapeForScene, addLight, viewToPosArgs, downloadFile } from './view3DUtils.js';
 import ViewerToolbar from './subComponents/viewerToolbar.vue';
+import { objectToCode } from './codeParse.js';
 const scene = new THREE.Scene();
 // 相机
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -84,7 +89,8 @@ onMounted(() => {
     mousePos = new THREE.Vector2();
 
     // 注册事件
-    window.addEventListener('mousemove', onMouseMove, false);
+    renderer.domElement.addEventListener('mousemove', onMouseMove, false);
+    renderer.domElement.addEventListener('mousedown', onMouseClick, false);
 
     //
     renderCall();
@@ -94,6 +100,65 @@ function onMouseMove(event) {
     const rect = renderer.domElement.getBoundingClientRect(); // 获取canvas的边界
     mousePos.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
     mousePos.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+}
+
+function onMouseClick(event) {
+    if (!editMode.value) {
+        return;
+    }
+    // 先修改object，再更新场景
+    // 检测是否已选对象
+    if (!selectedObject) {
+        return;
+    } else if (selectedObject.myMeta.shape == 'Plate') {
+        return;
+    }
+    // 处理工具栏已选项目
+    let data = editModeSelected.value;
+    let typ = data.slice(0, 5);
+    let payload = data.slice(6);
+
+    let opType, newShapeObject;
+    opType = editModeTool.value;
+    switch (typ) {
+        case 'shape':
+            newShapeObject = { shape: payload, color: 'u', skip: false };
+            if (payload == 'P') {
+                newShapeObject = { shape: payload, color: '-', skip: false };
+            }
+            break;
+        case 'color':
+            newShapeObject = { shape: selectedObject.myMeta.shape, color: payload, skip: false };
+            break;
+        case 'actio':
+            break;
+        default:
+            console.warn(data, '无法解析');
+    }
+
+    if (opType == 'Add') {
+        if (selectedObject.myMeta.layer == 4) {
+            lastObject.value.layers[4][selectedObject.myMeta.quadrant] = newShapeObject; // 跳过累加
+        } else {
+            if (!lastObject.value.layers[selectedObject.myMeta.layer + 1]) {
+                lastObject.value.layers[selectedObject.myMeta.layer + 1] = [];
+                for (const i in lastObject.value.layers[selectedObject.myMeta.layer]) {
+                    lastObject.value.layers[selectedObject.myMeta.layer + 1].push({ skip: true });
+                }
+            }
+            lastObject.value.layers[selectedObject.myMeta.layer + 1][selectedObject.myMeta.quadrant] = newShapeObject;
+        }
+    } else if (opType == 'Replace') {
+        lastObject.value.layers[selectedObject.myMeta.layer][selectedObject.myMeta.quadrant] = newShapeObject;
+    } else if (opType == 'Remove') {
+        lastObject.value.layers[selectedObject.myMeta.layer][selectedObject.myMeta.quadrant] = { skip: true };
+    }
+
+    //
+    if (lastObject.value) {
+        shapeCodeFromPage.value = objectToCode(lastObject.value);
+        updateScene(lastObject.value, lastShowPlate.value, lastModel.value, true);
+    }
 }
 
 onUnmounted(() => {
@@ -148,8 +213,8 @@ function renderCall() {
                 }
                 selectedObject = intersects[0].object;
                 if (!selectedObject.unselectable) {
-                    selectedObject.material.color.set(0x00ffff);
-                    selectedObject.material.emissive.set(0xffff00);
+                    selectedObject.material.color.set(selectedObject.shapeColor);
+                    selectedObject.material.emissive.set(0xff0000);
                 }
             }
         }
@@ -181,7 +246,7 @@ function asyncBlock(time) {
     });
 }
 
-async function updateScene(shapeObj, showPlate = true, model = 2) {
+async function updateScene(shapeObj, showPlate = true, model = 2, callByPage = false) {
     lastObject.value = shapeObj;
     lastShowPlate.value = showPlate;
     lastModel.value = model;
@@ -190,11 +255,9 @@ async function updateScene(shapeObj, showPlate = true, model = 2) {
             await asyncBlock(250);
         }
     }
-    removeAllModels(scene);
-    removeAllModels(scene);
-    removeAllModels(scene);
-    removeAllModels(scene);
-    removeAllModels(scene);
+    for (let i = 0; i < 10; i++) {
+        removeAllModels(scene);
+    }
     const currentModels = preloadedModels[`M${model}`];
     const posArg1 = viewToPosArgs[currentView.value];
     const posArg2 = viewToPosArgs[prevView.value];
@@ -213,7 +276,7 @@ async function updateScene(shapeObj, showPlate = true, model = 2) {
                 continue;
             }
 
-            addShapeForScene(scene, quadrant.shape, quadrant.color, currentModels, layerCurrent, quadrantCurrent, shapeObj.quadrantRotateDegs, true, posArg1, posArg2);
+            addShapeForScene(scene, quadrant.shape, quadrant.color, currentModels, layerCurrent, quadrantCurrent, shapeObj.quadrantRotateDegs, true, posArg1, posArg2, !callByPage);
             quadrantCurrent++;
         }
         layerCurrent++;
@@ -245,7 +308,7 @@ defineExpose({
             </div>
         </div>
         <div>
-            <ViewerToolbar :show="editMode" />
+            <ViewerToolbar :show="editMode" v-model:selected="editModeSelected" v-model:tool="editModeTool" />
         </div>
     </div>
 </template>
