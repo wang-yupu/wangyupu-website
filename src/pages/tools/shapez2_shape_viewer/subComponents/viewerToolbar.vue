@@ -26,7 +26,7 @@ const buttons = ref([
     { label: '青色', data: 'color-c', hotkey: 'T' },
     { label: '紫色', data: 'color-m', hotkey: 'A' },
     { label: '黄色', data: 'color-y', hotkey: 'S' },
-    { label: '白色', data: 'color-w', hotkey: 'S' },
+    { label: '白色', data: 'color-w', hotkey: 'D' },
 ]);
 const buttons2 = ref([
     { label: '移除', data: 'Remove', hotkey: 'Z' },
