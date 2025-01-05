@@ -96,6 +96,7 @@ onMounted(() => {
 
     //
     renderCall();
+    renderTimedCall()
 });
 
 function onMouseMove(event) {
@@ -211,13 +212,18 @@ function onResize(rendererMasterElement) {
     camera.updateProjectionMatrix();
 }
 
-function renderCall() {
-    requestAnimationFrame(renderCall);
+function renderTimedCall(){ // 每5ms调用
     for (const child of scene.children) {
         if (child.name == 'Scene' && 'targetPosition' in child) {
             child.position.lerp(child.targetPosition, child.moveSpeed);
         }
     }
+
+    setTimeout(renderTimedCall, 5);
+}
+
+function renderCall() {
+    requestAnimationFrame(renderCall);
 
     // raycaster
 

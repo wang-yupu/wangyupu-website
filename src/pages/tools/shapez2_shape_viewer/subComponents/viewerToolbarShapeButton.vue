@@ -22,6 +22,9 @@ function handleKeyboard(event) {
     if (props.hotkey.toUpperCase() != event.key.toUpperCase()) {
         return;
     }
+    if (event.ctrlKey){
+        return
+    }
     model.value = props.data
 }
 onMounted(() => {

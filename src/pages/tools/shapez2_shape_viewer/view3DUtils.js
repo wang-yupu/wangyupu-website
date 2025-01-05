@@ -110,7 +110,7 @@ const defaultPosArgs = {
     yOffset: 0.1,
     yBase: 0.02,
 };
-const moveSpeed = 0.1;
+const moveSpeed = 0.05;
 
 import { colorMapping } from './codeParse';
 export function addShapeForScene(scene, shape, color, loadedShape, layer = 0, quadrant = 0, rotateDeg = 90, shadow = true, posArgs = { defaultPosArgs }, fromPosArgs = undefined, animation = true) {
@@ -139,10 +139,17 @@ export function addShapeForScene(scene, shape, color, loadedShape, layer = 0, qu
             material.emissiveIntensity = 1;
             material.metalness = 0.3;
             material.roughness = 1.0;
+            child.myMeta = {
+                shape,
+                color,
+                layer,
+                quadrant,
+            };
             if (showAsCrystal) {
                 material.metalness = 1;
                 material.emissive.set(colorMapping[color]);
                 child.borderColor = colorMapping[color];
+                child.myMeta.shape = 'c'
             }
             child.material = material;
             child.unselectable = false;
@@ -150,12 +157,7 @@ export function addShapeForScene(scene, shape, color, loadedShape, layer = 0, qu
                 child.unselectable = true;
             }
 
-            child.myMeta = {
-                shape,
-                color,
-                layer,
-                quadrant,
-            };
+
         }
     });
     model.receiveShadow = shadow;
