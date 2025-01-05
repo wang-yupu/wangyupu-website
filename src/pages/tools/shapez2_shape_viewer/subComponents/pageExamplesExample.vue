@@ -7,10 +7,10 @@ const props = defineProps({
 
 <template>
     <li class="container">
-        <div>
+        <div class="part partLeft">
             <code class="shapeCode">{{ props.shapeCode }}</code>
         </div>
-        <div>
+        <div class="part partRight">
             <span class="name">{{ props.name }}</span>
             <button class="viewButton" @click="$emit('wclick',props.shapeCode)">查看</button>
         </div>
@@ -22,11 +22,12 @@ const props = defineProps({
     color: white;
     background-color: rgba(255, 255, 255, 0);
     backdrop-filter: blur(3px);
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr auto; /* 左侧占剩余空间，右侧内容自适应宽度 */
     align-items: center;
+    max-height: 30px;
+    width: 100%;
+    overflow: hidden; /* 防止溢出 */
 }
 
 .container::marker {
@@ -67,5 +68,21 @@ code {
 .viewButton:active {
     border: 3px #fecc01 solid;
     background-color: #fecb014e;
+}
+
+.part {
+    white-space: nowrap;
+}
+
+.partLeft {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden; 
+    margin-right: 10px;
+}
+
+.partRight {
+    white-space: nowrap;
+    justify-self: end;
 }
 </style>

@@ -392,6 +392,8 @@ defineExpose({
     margin-bottom: 3px;
     transition: all linear 75ms;
     text-overflow: ellipsis;
+    padding-left: 5px;
+    padding-right: 6px;
 }
 
 .viewOptions button:focus,

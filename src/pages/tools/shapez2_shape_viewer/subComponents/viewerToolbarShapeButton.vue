@@ -55,6 +55,7 @@ button {
     border: 1px transparent solid;
     padding: auto;
     margin-left: 2px;
+    margin-top: 2px;
 }
 
 .selected {

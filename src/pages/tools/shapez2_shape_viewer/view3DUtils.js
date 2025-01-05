@@ -110,7 +110,7 @@ const defaultPosArgs = {
     yOffset: 0.1,
     yBase: 0.02,
 };
-const moveSpeed = 0.05;
+const moveSpeed = 0.1;
 
 import { colorMapping } from './codeParse';
 export function addShapeForScene(scene, shape, color, loadedShape, layer = 0, quadrant = 0, rotateDeg = 90, shadow = true, posArgs = { defaultPosArgs }, fromPosArgs = undefined, animation = true) {
