@@ -4,6 +4,7 @@ const contact = () => import('./pages/contact.vue')
 const tools = () => import('./pages/tools.vue')
 const ep404nf = () => import('./pages/404nf.vue')
 const sitemap = () => import('./pages/sitemap.vue')
+const shortLink = () => import('./pages/shortLink.vue')
 
 // Tools
 const nngv = () => import('./pages/tools/nngv/page.vue')
@@ -25,12 +26,17 @@ const route_rule = [
     { path: '/tool/shapez2ShapeViewer/', component: shapez2ShapeViewer, smargs: { title: '异形工厂 2 形状查看器', category: '工具' } },
     { path: '/sitemap', component: sitemap, smargs: { title: '站点地图', category: '特殊页面' } },
     { path: '/404Page', name: 'NotFound', component: ep404nf, smargs: { title: '404页面', category: '特殊页面' } },
+    { path: '/l/:name', name: 'ShortLink', component: shortLink},
     { path: '/:pathMatch(.*)*', name: 'NotFound', component: ep404nf }
 ]
 
 // 关键词重定向: KW , URL
 const autoredirects = [
     { "kw": 'netease', "url": '/tool/nngweb' },
+]
+
+export const shortLinks = [
+    {"name": "msrpp", "target": "https://www.mcmod.cn/class/17821.html"}
 ]
 
 export default { route_rule, autoredirects }
