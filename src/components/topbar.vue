@@ -123,8 +123,9 @@ const CompleteLoading = () => {
 <div class="topbar" :style="{height:0.03*vp_height+'px',fontSize:0.025*vp_height+'px'}">
     <div class="topbar_left">
         <router-link to="/" class="w_icon"><img src="/src/assets/icon.png" alt="WANGYUPU ICON" :height="vp_height*0.03" :style="{height:0.03*vp_height+'px'}"></img></router-link>
-        <a href="https://github.com/wang-yupu" class="nocolor_link topbar_link">Github</a>
+        <a href="https://github.com/wang-yupu" class="nocolor_link topbar_link">GitHub</a>
         <router-link to="/tools/" class="nocolor_link topbar_link">工具</router-link>
+        <a href="https://yupu.dev" class="nocolor_link topbar_link">Blog</a>
     </div>
     <div class="topbar_right">
         <el-switch

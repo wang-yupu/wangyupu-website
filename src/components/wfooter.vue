@@ -12,11 +12,14 @@ import { lastProdCommitTime, lastProdCommitSHA } from '../store';
         <router-link to="/" class="nocolor_link">主页</router-link>
         <router-link to="/contact" class="nocolor_link">联系我</router-link>
         <router-link to="/sitemap" class="nocolor_link">站点地图</router-link>
+        <a href="https://yupu.dev" class="nocolor_link topbar_link">博客</a>
+        <a href="https://github.com/wang-yupu" class="nocolor_link topbar_link">我的GitHub</a>
     </div>
     <div class="footerLinkColumn">
         <span>工具</span>
         <router-link to="/tools" class="nocolor_link">工具目录</router-link>
         <router-link to="/tool/nngweb" class="nocolor_link">网易MC名称生成器</router-link>
+        <router-link to="/tool/shapez2ShapeViewer" class="nocolor_link">异形工厂 2 形状查看器</router-link>
         <span style="color:gray">还有更多...</span>
     </div>
     <div class="footerLinkColumn">
@@ -28,6 +31,7 @@ import { lastProdCommitTime, lastProdCommitSHA } from '../store';
         <span>提交</span>
         <span>SHA：{{ lastProdCommitSHA }}</span>
         <span>时间：{{ lastProdCommitTime }}</span>
+        <a :href="'https://github.com/wang-yupu/wangyupu-website/commit/'+lastProdCommitSHA">查看此提交</a>
     </div>
 </div>
 <div class="copyright">

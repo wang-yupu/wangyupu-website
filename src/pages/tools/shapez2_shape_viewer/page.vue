@@ -31,7 +31,7 @@ function setShape(code) {
     shapeCode.value = code;
 }
 
-const shapeCodeWatchCB = (val, f=true) => {
+const shapeCodeWatchCB = (val, f = true) => {
     let result = parseCode(val, splitByLB.value);
     if (!result.success) {
         parseSuccess.value = false;
@@ -39,16 +39,16 @@ const shapeCodeWatchCB = (val, f=true) => {
     } else {
         parseSuccess.value = true;
         if (viewerRef.value) {
-            viewerRef.value.updateScene(result.obj,true,2,true);
+            viewerRef.value.updateScene(result.obj, true, 2, true);
         }
     }
-    if (f){
-        shapeCodeWatchCB(shapeCode.value, false)
+    if (f) {
+        shapeCodeWatchCB(shapeCode.value, false);
     }
 };
 watch(shapeCode, shapeCodeWatchCB);
 onMounted(() => {
-    shapeCodeWatchCB(shapeCode.value)
+    shapeCodeWatchCB(shapeCode.value);
 });
 </script>
 
@@ -57,12 +57,12 @@ onMounted(() => {
         <div class="containerBgMixerLayer1">
             <div class="containerBgMixerLayer0">
                 <h1 class="pageTitleMaster">
-                    <span class="pageTitle">shapez 2 shape view / generator (WIP)</span>
+                    <span class="pageTitle">shapez 2 shape view / generator</span>
                 </h1>
                 <div class="content">
                     <div class="element shapeViewer">
                         <span>形状</span>
-                        <Viewer ref="viewerRef" v-model="shapeCode"/>
+                        <Viewer ref="viewerRef" v-model="shapeCode" />
                     </div>
                     <div class="element options">
                         <span>选项</span>
