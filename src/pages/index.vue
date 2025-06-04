@@ -1,7 +1,6 @@
 <script setup>
-import { ref } from 'vue'
-document.title = "wangyupu"
-
+import { ref } from 'vue';
+document.title = 'wangyupu';
 </script>
 
 <template>
@@ -15,31 +14,31 @@ document.title = "wangyupu"
                     <h1>联系我</h1>
                 </div>
                 <div class="right">
-                    <router-link to="/contact" class="nocolor_link index_link">在此处查看</router-link>
+                    <router-link to="/contact" class="nocolor_link index_link">Click Me!</router-link>
                 </div>
             </div>
             <div class="content_aligned">
                 <div class="left">
-                    <h1>你好</h1>
+                    <h1>placeholder</h1>
                 </div>
                 <div class="right">
-                    <span>你好</span>
+                    <span>placeholder</span>
                 </div>
             </div>
             <div class="content_aligned">
                 <div class="left">
-                    <h1>你好</h1>
+                    <h1>placeholder</h1>
                 </div>
                 <div class="right">
-                    <span>你好</span>
+                    <span>placeholder</span>
                 </div>
             </div>
             <div class="content_aligned">
                 <div class="left">
-                    <h1>你好</h1>
+                    <h1>placeholder</h1>
                 </div>
                 <div class="right">
-                    <span>你好</span>
+                    <span>placeholder</span>
                 </div>
             </div>
         </div>
@@ -49,9 +48,7 @@ document.title = "wangyupu"
 <style scoped>
 .content {
     min-height: 100vh;
-    background: linear-gradient(217deg, rgba(0, 217, 255, 0.2), rgba(255,0,0,0) 75%),
-            linear-gradient(127deg, rgba(0,255,0,0.2), rgba(0,255,0,0) 75%),
-            linear-gradient(336deg, rgba(0,0,255,0.2), rgba(0,0,255,0) 75%);
+    background: linear-gradient(217deg, rgba(0, 217, 255, 0.2), rgba(255, 0, 0, 0) 75%), linear-gradient(127deg, rgba(0, 255, 0, 0.2), rgba(0, 255, 0, 0) 75%), linear-gradient(336deg, rgba(0, 0, 255, 0.2), rgba(0, 0, 255, 0) 75%);
 }
 
 .title_div {
@@ -81,7 +78,7 @@ document.title = "wangyupu"
 }
 
 .index_link {
-    font-size: 150%
+    font-size: 150%;
 }
 
 .content_aligned {
